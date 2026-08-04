@@ -42,7 +42,7 @@ gill_torus_z    = -2.5;             // mm, torus centre below head mid-plane (ti
 chin_w        = 14;             // mm, width of horizontal oval mouth (aggressive)
 chin_h        = 4.5;            // mm, height of oval mouth (flatter = more aggressive)
 chin_x        = -rx + 3.5;      // mm, position along X from centre (further forward)
-chin_z        = -(ry * 0.78);   // mm, position on underside (lower)
+chin_z        = -(ry * 0.68);   // mm, position on underside (raised to close belly gap)
 
 // --- Skirt collar (rear cylinder) ---
 collar_d        = 15;             // mm
@@ -55,7 +55,7 @@ collar_blend_d  = 18.0;          // mm, wider blend diameter to merge collar int
 jet_d           = 2.4;           // mm jet tunnel diameter
 // Start jets well inside the chin slot so no separate hole appears on the belly
 jet_start_x     = chin_x + 3.5;  // pulled forward to sit inside the chin opening
-jet_start_z     = chin_z + 3.5;  // raised further into body to stay within chin slot
+jet_start_z     = chin_z + 4.5;  // raised further into body to stay within chin slot
 // Exits at the crown (top of head), behind the eyes and well clear of eye sockets
 jet_exit_x      = eye_x_offset + 4.5;  // behind eyes toward tail
 jet_exit_y      = 1.2;                 // close to centreline at crown
