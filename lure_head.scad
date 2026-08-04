@@ -32,6 +32,9 @@ collar_d      = 15;             // mm
 collar_len    = 6;              // mm
 collar_x      = rx - collar_len / 2;  // centred at back of egg
 
+// --- Nose trim ---
+nose_flat_x   = -rx + 1.2;      // mm, slightly trims the nose tip for a flatter face
+
 // --- Jets (new) ---
 jet_d         = 2.4;            // mm jet tunnel diameter
 jet_start_x   = chin_x + 1.0;   // start near mouth
@@ -54,6 +57,10 @@ difference() {
             rotate([0, 90, 0])
                 cylinder(d = collar_d, h = collar_len, center = true, $fn = 60);
     }
+
+    // --- Nose flattening cut ---
+    translate([nose_flat_x - 10, 0, 0])
+        cube([20, max_diameter * 2, max_diameter * 2], center = true);
 
     // --- Center bore (nose to tail) ---
     translate([-rx, 0, 0])
