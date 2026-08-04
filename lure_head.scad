@@ -32,7 +32,7 @@ vent_port_lift = 0.8;            // mm, extends the exit cut above the crown
 // --- Skirt collar (rear cylinder) ---
 collar_d      = 15;             // mm
 collar_len    = 22;             // mm
-collar_x      = rx - collar_len / 2;  // centred at back of egg
+collar_x      = rx + collar_len / 2;  // starts at the back of the head and extends aft
 
 // --- Nose trim ---
 nose_flat_x   = -rx + 1.2;      // mm, slightly trims the nose tip for a flatter face
