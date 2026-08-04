@@ -24,9 +24,9 @@ eye_y_offset  = ry - 0.5;       // places on the side of the head
 // --- Smiling mouth ---
 mouth_w       = 14;             // mm, width of the smile opening
 mouth_h       = 4.0;            // mm, thickness of the smile cut
-mouth_x       = -rx + 4.2;      // mm, slightly behind the nose trim
-mouth_z       = -(ry * 0.72);   // mm, sits on the lower front of the head
-mouth_curve   = 2.2;            // mm, lifts the corners for a smile
+mouth_x       = -rx + 1.6;      // mm, ties the smile into the nose and leader entry
+mouth_z       = -(ry * 0.48);   // mm, raises the mouth toward the leader hole
+mouth_curve   = 1.6;            // mm, lifts the corners for a smile
 
 // --- Skirt collar (rear cylinder) ---
 collar_d      = 15;             // mm
@@ -78,8 +78,11 @@ difference() {
         rotate([-90, 0, 0])
             cylinder(d = eye_d, h = eye_depth + 4.0, $fn = 80);
 
-    // --- Smiling mouth opening ---
+    // --- Smiling mouth opening blended into the leader entry ---
     hull() {
+        translate([-rx + 0.4, 0, 0])
+            rotate([0, 90, 0])
+                cylinder(d = bore_d + 1.2, h = 0.8, center = true, $fn = 40);
         translate([mouth_x, 0, mouth_z])
             rotate([0, 88, 0])
                 cylinder(d = mouth_h, h = 0.8, center = true, $fn = 48);
