@@ -2,6 +2,10 @@
 //  Blue Eye Konahead Trolling Lure Head
 //  42mm long x 21mm max diameter
 //  3D print orientation: nose facing down / flat face up
+//
+//  Swim action features:
+//    - Concave cupped nose face: deflects water to create zig-zag wobble
+//    - Leader bore offset +2 mm above centre: pulls nose down so lure dives
 // ============================================================
 
 // --- Main dimensions ---
@@ -14,6 +18,12 @@ ry = max_diameter / 2;         // Y/Z half-axis (radial)
 
 // --- Bore (line-through hole) ---
 bore_d        = 2.0;            // mm, center hole for leader/cable
+bore_z_offset = 2.0;            // mm, bore raised above centreline so lure nose-dives under tow
+
+// --- Cupped nose face ---
+cup_r         = ry * 0.85;      // mm, radius of concave cup sphere (slightly smaller than head radius)
+cup_depth     = 3.5;            // mm, how deep the cup bites into the nose face
+nose_x        = -rx;            // mm, X position of nose tip
 
 // --- Eye sockets ---
 eye_d         = 12;             // mm, eye recess diameter
@@ -55,10 +65,14 @@ difference() {
                 cylinder(d = collar_d, h = collar_len, center = true, $fn = 60);
     }
 
-    // --- Center bore (nose to tail) ---
-    translate([-rx, 0, 0])
+    // --- Center bore (offset above centreline for nose-down dive action) ---
+    translate([-rx, 0, bore_z_offset])
         rotate([0, 90, 0])
             cylinder(d = bore_d, h = head_length + collar_len, $fn = 30);
+
+    // --- Concave cupped nose face (creates zig-zag wobble action) ---
+    translate([nose_x - cup_r + cup_depth, 0, 0])
+        sphere(r = cup_r, $fn = 80);
 
     // --- Eye socket – starboard (right, +Y side) ---
     // pushed slightly deeper so no thin skin remains over pocket
