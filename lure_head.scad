@@ -13,7 +13,7 @@ rx = head_length / 2;          // X half-axis (fore-aft)
 ry = max_diameter / 2;         // Y/Z half-axis (radial)
 
 // --- Bore (line-through hole) ---
-bore_d        = 3.5;            // mm, center hole for leader/cable
+bore_d        = 2.0;            // mm, center hole for leader/cable
 
 // --- Eye sockets ---
 eye_d         = 12;             // mm, eye recess diameter
@@ -22,10 +22,10 @@ eye_x_offset  = 2;              // mm, forward of centre
 eye_y_offset  = ry - 0.5;       // places on the side of the head
 
 // --- Chin slot ---
-chin_w        = 9;              // mm, width of oval mouth
-chin_h        = 6;              // mm, height of oval mouth
-chin_x        = -rx + 6;        // mm, position along X from centre
-chin_z        = -(ry * 0.55);   // mm, position on underside
+chin_w        = 14;             // mm, width of horizontal oval mouth (aggressive)
+chin_h        = 4.5;            // mm, height of oval mouth (flatter = more aggressive)
+chin_x        = -rx + 3.5;      // mm, position along X from centre (further forward)
+chin_z        = -(ry * 0.78);   // mm, position on underside (lower)
 
 // --- Skirt collar (rear cylinder) ---
 collar_d      = 15;             // mm
@@ -62,9 +62,9 @@ difference() {
         rotate([-90, 0, 0])
             cylinder(d = eye_d, h = eye_depth + 1, $fn = 60);
 
-    // --- Chin slot (oval mouth on underside-front) ---
+    // --- Chin slot (aggressive horizontal oval mouth) ---
     translate([chin_x, 0, chin_z])
-        scale([1, chin_w / chin_h, 1])
-            rotate([0, 15, 0])          // slight downward angle for bubble trail
-                cylinder(d = chin_h, h = ry, $fn = 40);
+        rotate([0, 30, 0])                 // steeper face = more action/smoke
+            scale([chin_w/chin_h, 1, 1])   // horizontal oval
+                cylinder(d = chin_h, h = ry * 1.2, $fn = 72);
 }
