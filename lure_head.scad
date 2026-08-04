@@ -24,9 +24,9 @@ eye_y_offset  = ry - 0.5;       // places on the side of the head
 // --- Cupped mouth ---
 mouth_w       = 14;             // mm, width of the cupped mouth
 mouth_h       = 4.8;            // mm, height of the mouth opening
-mouth_x       = -rx + 1.4;      // mm, keep the mouth integrated with the nose
-mouth_z       = -1.0;           // mm, center the cup around the leader bore
-mouth_cup_d   = 11.5;           // mm, diameter of the horizontal cup
+mouth_x       = -rx + 0.9;      // mm, pull the mouth cut back into the nose
+mouth_z       = -0.6;           // mm, keep the cup centered around the leader bore
+mouth_cup_d   = 10.8;           // mm, diameter of the horizontal cup
 
 // --- Skirt collar (rear cylinder) ---
 collar_d      = 15;             // mm
@@ -82,16 +82,16 @@ difference() {
     translate([mouth_x, 0, mouth_z])
         rotate([0, 90, 0])
             difference() {
-                cylinder(d = mouth_cup_d, h = 3.2, center = true, $fn = 72);
-                translate([0.6, 0, 0])
-                    cylinder(d = mouth_cup_d - mouth_h, h = 3.6, center = true, $fn = 72);
+                cylinder(d = mouth_cup_d, h = 2.2, center = true, $fn = 72);
+                translate([0.85, 0, 0])
+                    cylinder(d = mouth_cup_d - mouth_h, h = 2.8, center = true, $fn = 72);
             }
 
     hull() {
-        translate([-rx + 0.5, 0, 0])
+        translate([-rx + 0.2, 0, 0])
             rotate([0, 90, 0])
-                cylinder(d = bore_d + 1.6, h = 1.0, center = true, $fn = 40);
-        translate([mouth_x - 0.6, 0, mouth_z])
+                cylinder(d = bore_d + 1.2, h = 0.8, center = true, $fn = 40);
+        translate([mouth_x - 0.3, 0, mouth_z])
             rotate([0, 90, 0])
                 cylinder(d = mouth_h, h = 1.2, center = true, $fn = 48);
     }
