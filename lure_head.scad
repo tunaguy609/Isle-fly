@@ -30,11 +30,13 @@ eye_d         = 8;               // mm, eye seat diameter (to hold eye insert)
 eye_depth     = 1.2;             // mm, shallow seat depth
 eye_x_offset  = 2;               // mm, forward of centre
 
-// --- Gill plate bump ---
-gill_w        = 14;              // mm, fore-aft width of gill plate ellipse
-gill_h        = 11;              // mm, vertical height of gill plate ellipse
-gill_protrude = 2.8;             // mm, how far the bump stands proud of the head surface
-gill_x        = eye_x_offset - 6; // mm, moved forward toward nose for correct placement
+// --- Gill line (surface groove, flush with head) ---
+// A thin crescent groove cut into the head surface traces the gill cover outline.
+// The torus centre is offset from the head centre so only its arc intersects the surface.
+gill_line_x     = eye_x_offset - 5; // mm, fore-aft centre of gill arc (forward of eyes)
+gill_torus_r    = 8.5;              // mm, major radius of torus arc (arc curvature)
+gill_groove_d   = 1.2;              // mm, groove tube diameter (width/depth of incised line)
+gill_torus_z    = -2.5;             // mm, torus centre below head mid-plane (tilts arc backward)
 
 // --- Chin slot ---
 chin_w        = 14;             // mm, width of horizontal oval mouth (aggressive)
@@ -72,31 +74,7 @@ difference() {
             rotate([0, 90, 0])
                 cylinder(d = collar_d, h = collar_len, center = true, $fn = 60);
 
-        // Gill plate bump – starboard (+Y)
-        // hull() between a proud sphere and a thin disc at the head surface
-        // so the plate grows organically out of the head with no hard seam.
-        translate([gill_x, 0, 0])
-            hull() {
-                // Thin disc sitting flush on the head surface
-                translate([0, ry - 0.1, 0])
-                    scale([gill_w / gill_h, 1, 1])
-                        cylinder(d = gill_h, h = 0.1, center = true, $fn = 80);
-                // Proud sphere that forms the bump peak
-                translate([0, ry + gill_protrude - gill_h * 0.18, 0])
-                    scale([gill_w / gill_h, 1, 1])
-                        sphere(d = gill_h * 0.55, $fn = 60);
-            }
-
-        // Gill plate bump – port (-Y)
-        translate([gill_x, 0, 0])
-            hull() {
-                translate([0, -(ry - 0.1), 0])
-                    scale([gill_w / gill_h, 1, 1])
-                        cylinder(d = gill_h, h = 0.1, center = true, $fn = 80);
-                translate([0, -(ry + gill_protrude - gill_h * 0.18), 0])
-                    scale([gill_w / gill_h, 1, 1])
-                        sphere(d = gill_h * 0.55, $fn = 60);
-            }
+        // Blend collar into head so it reads as one piece
         hull() {
             translate([collar_blend_x, 0, 0])
                 sphere(d = collar_blend_d, $fn = 60);
@@ -115,15 +93,31 @@ difference() {
     translate([nose_x - cup_r + cup_depth, 0, 0])
         sphere(r = cup_r, $fn = 80);
 
-    // --- Eye seat – starboard: shallow recess in gill bump to hold eye insert ---
-    translate([gill_x, ry + gill_protrude - eye_depth, 0])
+    // --- Eye seat – starboard: shallow recess directly in head surface ---
+    translate([eye_x_offset, ry + 1, 0])
         rotate([90, 0, 0])
-            cylinder(d = eye_d, h = eye_depth + 1.0, $fn = 80);
+            cylinder(d = eye_d, h = eye_depth + 2.0, $fn = 80);
 
     // --- Eye seat – port ---
-    translate([gill_x, -(ry + gill_protrude - eye_depth), 0])
+    translate([eye_x_offset, -(ry + 1), 0])
         rotate([-90, 0, 0])
-            cylinder(d = eye_d, h = eye_depth + 1.0, $fn = 80);
+            cylinder(d = eye_d, h = eye_depth + 2.0, $fn = 80);
+
+    // --- Gill line groove – starboard (+Y side) ---
+    // A torus arc skimming the head surface produces a flush curved incised line
+    // that traces the gill cover outline (curves back from eye toward belly).
+    translate([gill_line_x, ry - gill_torus_r + gill_groove_d * 0.5, gill_torus_z])
+        rotate([90, 0, 0])
+            rotate_extrude(angle = 110, $fn = 120)
+                translate([gill_torus_r, 0, 0])
+                    circle(d = gill_groove_d, $fn = 24);
+
+    // --- Gill line groove – port (-Y side) ---
+    translate([gill_line_x, -(ry - gill_torus_r + gill_groove_d * 0.5), gill_torus_z])
+        rotate([-90, 0, 0])
+            rotate_extrude(angle = 110, $fn = 120)
+                translate([gill_torus_r, 0, 0])
+                    circle(d = gill_groove_d, $fn = 24);
 
     // --- Chin slot (aggressive horizontal oval mouth) ---
     translate([chin_x, 0, chin_z])
