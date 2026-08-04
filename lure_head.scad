@@ -19,18 +19,15 @@ eye_x_offset  = 2;              // mm, forward of centre
 eye_y_offset  = ry - 0.5;       // places on the side of the head
 
 // --- Jet vents ---
-vent_d         = 2.8;            // mm, vent diameter
-vent_start_x   = -rx + 4.4;      // mm, under-chin inlet position
-vent_mid_x     = -1.0;           // mm, centre of the internal angled run
-vent_end_x     = eye_x_offset + 6.6; // mm, exits behind the eyes
-vent_y_start   = 1.6;            // mm, starts close to centreline under the chin
-vent_y_mid     = 2.8;            // mm, carries through the body on a matching diagonal
-vent_y_end     = 4.0;            // mm, crown exit offset aligned to the inlet path
-vent_start_z   = -6.2;           // mm, under-chin height
-vent_mid_z     = -0.1;           // mm, interior rise through the body
-vent_end_z     = 5.8;            // mm, crown exit height
-port_d         = 3.4;            // mm, crown exit port diameter
-port_len       = 8.2;            // mm, extra cut length to break through the surface
+vent_d         = 3.0;            // mm, vent diameter
+vent_start_x   = -rx + 4.8;      // mm, under-chin inlet position
+vent_end_x     = eye_x_offset + 6.8; // mm, exits behind the eyes
+vent_y_start   = 1.3;            // mm, starts near the centreline under the chin
+vent_y_end     = 4.1;            // mm, angles outward toward the crown
+vent_start_z   = -6.4;           // mm, under-chin height
+vent_end_z     = 6.4;            // mm, crown exit height
+vent_port_d    = 3.6;            // mm, exit port diameter
+vent_port_lift = 0.8;            // mm, extends the exit cut above the crown
 
 // --- Skirt collar (rear cylinder) ---
 collar_d      = 15;             // mm
@@ -43,26 +40,13 @@ nose_flat_x   = -rx + 1.2;      // mm, slightly trims the nose tip for a flatter
 module jet_vent(y_sign = 1) {
     hull() {
         translate([vent_start_x, y_sign * vent_y_start, vent_start_z])
-            sphere(d = vent_d, $fn = 36);
-
-        translate([vent_mid_x, y_sign * vent_y_mid, vent_mid_z])
-            sphere(d = vent_d, $fn = 36);
+            sphere(d = vent_d, $fn = 40);
 
         translate([vent_end_x, y_sign * vent_y_end, vent_end_z])
-            sphere(d = vent_d, $fn = 36);
-    }
-}
+            sphere(d = vent_port_d, $fn = 48);
 
-module jet_exit_port(y_sign = 1) {
-    hull() {
-        translate([vent_mid_x + 1.6, y_sign * (vent_y_mid + 0.3), vent_mid_z + 1.2])
-            sphere(d = vent_d + 0.3, $fn = 36);
-
-        translate([vent_end_x, y_sign * vent_y_end, vent_end_z])
-            sphere(d = port_d, $fn = 48);
-
-        translate([vent_end_x + 1.3, y_sign * (vent_y_end + 0.3), vent_end_z + 2.8])
-            sphere(d = port_d, $fn = 48);
+        translate([vent_end_x + 0.8, y_sign * (vent_y_end + 0.2), vent_end_z + vent_port_lift])
+            sphere(d = vent_port_d, $fn = 48);
     }
 }
 
@@ -98,6 +82,4 @@ difference() {
     // --- Jet vents ---
     jet_vent(1);
     jet_vent(-1);
-    jet_exit_port(1);
-    jet_exit_port(-1);
 }
