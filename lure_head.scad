@@ -26,10 +26,15 @@ cup_depth     = 3.5;            // mm, how deep the cup bites into the nose face
 nose_x        = -rx;            // mm, X position of nose tip
 
 // --- Eye sockets ---
-eye_d         = 12;             // mm, eye recess diameter
-eye_depth     = 1.8;            // mm, recess depth
-eye_x_offset  = 2;              // mm, forward of centre
-eye_y_offset  = ry - 0.5;       // places on the side of the head
+eye_d         = 8;               // mm, eye seat diameter (to hold eye insert)
+eye_depth     = 1.2;             // mm, shallow seat depth
+eye_x_offset  = 2;               // mm, forward of centre
+
+// --- Gill plate bump ---
+gill_w        = 14;              // mm, fore-aft width of gill plate ellipse
+gill_h        = 11;              // mm, vertical height of gill plate ellipse
+gill_protrude = 2.8;             // mm, how far the bump stands proud of the head surface
+gill_x        = eye_x_offset;    // mm, aligned with eye X position
 
 // --- Chin slot ---
 chin_w        = 14;             // mm, width of horizontal oval mouth (aggressive)
@@ -67,7 +72,26 @@ difference() {
             rotate([0, 90, 0])
                 cylinder(d = collar_d, h = collar_len, center = true, $fn = 60);
 
-        // Blend collar into head so it reads as one piece
+        // Gill plate bump – starboard (+Y)
+        // A lens-shaped protrusion: scale a sphere to an ellipse then clip to a half
+        translate([gill_x, ry - 0.2, 0])
+            rotate([0, 0, 0])
+                scale([gill_w/gill_h, 1, 1])
+                    intersection() {
+                        sphere(d = gill_h, $fn = 80);
+                        translate([0, gill_protrude / 2, 0])
+                            cube([gill_w + 2, gill_protrude, gill_h + 2], center = true);
+                    }
+
+        // Gill plate bump – port (-Y)
+        translate([gill_x, -(ry - 0.2), 0])
+            rotate([0, 0, 0])
+                scale([gill_w/gill_h, 1, 1])
+                    intersection() {
+                        sphere(d = gill_h, $fn = 80);
+                        translate([0, -(gill_protrude / 2), 0])
+                            cube([gill_w + 2, gill_protrude, gill_h + 2], center = true);
+                    }
         hull() {
             translate([collar_blend_x, 0, 0])
                 sphere(d = collar_blend_d, $fn = 60);
@@ -86,17 +110,15 @@ difference() {
     translate([nose_x - cup_r + cup_depth, 0, 0])
         sphere(r = cup_r, $fn = 80);
 
-    // --- Eye socket – starboard (right, +Y side) ---
-    // Translate origin beyond the surface (ry + 1) so the cylinder enters from outside
-    // and punches cleanly through, leaving no skin flap over the recess.
-    translate([eye_x_offset, ry + 1, 0])
+    // --- Eye seat – starboard: shallow recess in gill bump to hold eye insert ---
+    translate([gill_x, ry + gill_protrude - eye_depth, 0])
         rotate([90, 0, 0])
-            cylinder(d = eye_d, h = eye_depth + 2.0, $fn = 80);
+            cylinder(d = eye_d, h = eye_depth + 1.0, $fn = 80);
 
-    // --- Eye socket – port (left, -Y side) ---
-    translate([eye_x_offset, -(ry + 1), 0])
+    // --- Eye seat – port ---
+    translate([gill_x, -(ry + gill_protrude - eye_depth), 0])
         rotate([-90, 0, 0])
-            cylinder(d = eye_d, h = eye_depth + 2.0, $fn = 80);
+            cylinder(d = eye_d, h = eye_depth + 1.0, $fn = 80);
 
     // --- Chin slot (aggressive horizontal oval mouth) ---
     translate([chin_x, 0, chin_z])
