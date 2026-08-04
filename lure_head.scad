@@ -87,14 +87,6 @@ difference() {
                     cylinder(d = mouth_cup_d - mouth_h, h = 2.8, center = true, $fn = 72);
             }
 
-    hull() {
-        translate([-rx + 0.2, 0, 0])
-            rotate([0, 90, 0])
-                cylinder(d = bore_d + 1.2, h = 0.8, center = true, $fn = 40);
-        translate([mouth_x - 0.3, 0, mouth_z])
-            rotate([0, 90, 0])
-                cylinder(d = mouth_h, h = 1.2, center = true, $fn = 48);
-    }
 
     // --- Twin jet tunnels from mouth to behind-eye exits ---
     // starboard jet
