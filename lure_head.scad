@@ -53,8 +53,9 @@ collar_blend_d  = 18.0;          // mm, wider blend diameter to merge collar int
 
 // --- Jets ---
 jet_d           = 2.4;           // mm jet tunnel diameter
-jet_start_x     = chin_x + 1.0;  // start near mouth
-jet_start_z     = chin_z + 0.8;  // lift slightly into body
+// Start jets well inside the chin slot so no separate hole appears on the belly
+jet_start_x     = chin_x + 3.5;  // pulled forward to sit inside the chin opening
+jet_start_z     = chin_z + 2.0;  // raised further into body to stay within chin slot
 // Exits at the crown (top of head), behind the eyes and well clear of eye sockets
 jet_exit_x      = eye_x_offset + 4.5;  // behind eyes toward tail
 jet_exit_y      = 1.2;                 // close to centreline at crown
