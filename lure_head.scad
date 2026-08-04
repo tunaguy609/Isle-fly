@@ -31,8 +31,11 @@ vent_port_lift = 0.8;            // mm, extends the exit cut above the crown
 
 // --- Skirt collar (rear cylinder) ---
 collar_d      = 15;             // mm
-collar_len    = 15;             // mm
+collar_len    = 24;             // mm
 collar_x      = rx - collar_len / 2;  // centred at back of egg
+ramp_pos_from_tail = 12;        // mm, ramp starts this far forward from the tail end of the spigot
+ramp_len      = 3;              // mm, retaining ramp length
+ramp_peak_d   = 17;             // mm, retaining ramp peak diameter
 
 // --- Nose trim ---
 nose_flat_x   = -rx + 1.2;      // mm, slightly trims the nose tip for a flatter face
@@ -68,6 +71,11 @@ difference() {
         translate([collar_x, 0, 0])
             rotate([0, 90, 0])
                 cylinder(d = collar_d, h = collar_len, center = true, $fn = 60);
+
+        // Skirt retaining ramp on spigot
+        translate([rx + ramp_pos_from_tail - ramp_len / 2, 0, 0])
+            rotate([0, 90, 0])
+                cylinder(d1 = collar_d, d2 = ramp_peak_d, h = ramp_len, center = true, $fn = 60);
     }
 
     // --- Nose flattening cut ---
