@@ -45,7 +45,8 @@ chin_x        = -rx + 3.5;      // mm, position along X from centre (further for
 chin_z        = -(ry * 0.68);   // mm, position on underside (raised to close belly gap)
 
 // --- Skirt collar (rear cylinder) ---
-collar_d        = 15;             // mm
+collar_d        = 15;             // mm, outer diameter
+collar_bore_d   = 14;             // mm, inner (bore) diameter – hollow to accept skirt sleeve
 collar_len      = 32;             // mm – restored full length
 collar_x        = rx + collar_len / 2 - 4;  // tucks 4mm into head for smoother blend
 collar_blend_x  = rx - 3.0;      // mm, blend starts slightly inside the head
@@ -89,6 +90,11 @@ difference() {
     translate([-rx, 0, bore_z_offset])
         rotate([0, 90, 0])
             cylinder(d = bore_d, h = head_length + collar_len, $fn = 30);
+
+    // --- Skirt collar bore (hollow interior for skirt sleeve) ---
+    translate([collar_x, 0, 0])
+        rotate([0, 90, 0])
+            cylinder(d = collar_bore_d, h = collar_len + 1, center = true, $fn = 60);
 
     // --- Concave cupped nose face (creates zig-zag wobble action) ---
     translate([nose_x - cup_r + cup_depth, 0, 0])
