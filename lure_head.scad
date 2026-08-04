@@ -35,17 +35,6 @@ collar_x      = rx - collar_len / 2;  // centred at back of egg
 
 // --- Nose trim ---
 nose_flat_x   = -rx + 1.2;      // mm, slightly trims the nose tip for a flatter face
-nose_relief_x = mouth_x + 0.9;  // mm, trims the lower lip so it does not protrude past the mouth/bore
-nose_relief_z = mouth_z - 1.0;  // mm, keep relief focused on the lower nose lip only
-nose_relief_d = bore_d + 3.6;   // mm, broader than the leader bore to clear the protrusion cleanly
-
-// --- Jets (new) ---
-jet_d         = 2.4;            // mm jet tunnel diameter
-jet_start_x   = mouth_x + 0.1;  // start from the original chin vent position
-jet_start_z   = mouth_z - 2.2;  // start from the underside/chin instead of the mouth lip
-jet_exit_x    = eye_x_offset + 2.5;   // exit near the crown, just aft of the eyes
-jet_exit_y    = 3.2;                  // keep jets close to the centreline as they rise
-jet_exit_z    = ry - 0.4;             // exit through the top of the head
 
 // ============================================================
 //  Assembly
@@ -90,26 +79,4 @@ difference() {
                     cylinder(d = mouth_cup_d - mouth_h, h = 2.8, center = true, $fn = 72);
             }
 
-    // --- Lower nose lip relief to remove protrusion ahead of the bore/mouth ---
-    translate([nose_relief_x, 0, nose_relief_z])
-        rotate([0, 90, 0])
-            cylinder(d = nose_relief_d, h = 3.2, center = true, $fn = 48);
-
-
-    // --- Twin jet tunnels from mouth to behind-eye exits ---
-    // starboard jet
-    hull() {
-        translate([jet_start_x,  1.8, jet_start_z])
-            rotate([0, 90, 0]) cylinder(d = jet_d, h = 0.8, center = true, $fn = 36);
-        translate([jet_exit_x,   jet_exit_y, jet_exit_z])
-            rotate([0, 90, 0]) cylinder(d = jet_d, h = 0.8, center = true, $fn = 36);
-    }
-
-    // port jet
-    hull() {
-        translate([jet_start_x, -1.8, jet_start_z])
-            rotate([0, 90, 0]) cylinder(d = jet_d, h = 0.8, center = true, $fn = 36);
-        translate([jet_exit_x,  -jet_exit_y, jet_exit_z])
-            rotate([0, 90, 0]) cylinder(d = jet_d, h = 0.8, center = true, $fn = 36);
-    }
 }
