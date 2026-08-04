@@ -31,7 +31,7 @@ vent_port_lift = 0.8;            // mm, extends the exit cut above the crown
 
 // --- Skirt collar (rear cylinder) ---
 collar_d      = 15;             // mm
-collar_len    = 22;             // mm
+collar_len    = 32;             // mm
 collar_x      = rx + collar_len / 2 - 4;  // tucks 4mm into the head for a smoother blend
 collar_blend_x = rx - 3.0;      // mm, blend starts slightly inside the head
 collar_blend_d = 18.0;          // mm, wider blend diameter to merge collar into head
