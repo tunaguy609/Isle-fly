@@ -21,11 +21,12 @@ eye_depth     = 1.8;            // mm, recess depth
 eye_x_offset  = 2;              // mm, forward of centre
 eye_y_offset  = ry - 0.5;       // places on the side of the head
 
-// --- Chin slot ---
-chin_w        = 14;             // mm, width of horizontal oval mouth (aggressive)
-chin_h        = 4.5;            // mm, height of oval mouth (flatter = more aggressive)
-chin_x        = -rx + 3.5;      // mm, position along X from centre (further forward)
-chin_z        = -(ry * 0.78);   // mm, position on underside (lower)
+// --- Smiling mouth ---
+mouth_w       = 14;             // mm, width of the smile opening
+mouth_h       = 4.0;            // mm, thickness of the smile cut
+mouth_x       = -rx + 4.2;      // mm, slightly behind the nose trim
+mouth_z       = -(ry * 0.72);   // mm, sits on the lower front of the head
+mouth_curve   = 2.2;            // mm, lifts the corners for a smile
 
 // --- Skirt collar (rear cylinder) ---
 collar_d      = 15;             // mm
@@ -37,8 +38,8 @@ nose_flat_x   = -rx + 1.2;      // mm, slightly trims the nose tip for a flatter
 
 // --- Jets (new) ---
 jet_d         = 2.4;            // mm jet tunnel diameter
-jet_start_x   = chin_x + 1.0;   // start near mouth
-jet_start_z   = chin_z + 0.8;   // lift slightly into body
+jet_start_x   = mouth_x + 0.6;  // start near mouth
+jet_start_z   = mouth_z + 0.6;  // lift slightly into body
 jet_exit_x    = eye_x_offset + 2.5;   // exit near the crown, just aft of the eyes
 jet_exit_y    = 3.2;                  // keep jets close to the centreline as they rise
 jet_exit_z    = ry - 0.4;             // exit through the top of the head
@@ -77,11 +78,18 @@ difference() {
         rotate([-90, 0, 0])
             cylinder(d = eye_d, h = eye_depth + 4.0, $fn = 80);
 
-    // --- Chin slot (aggressive horizontal oval mouth) ---
-    translate([chin_x, 0, chin_z])
-        rotate([0, 30, 0])                 // steeper face = more action/smoke
-            scale([chin_w/chin_h, 1, 1])   // horizontal oval
-                cylinder(d = chin_h, h = ry * 1.2, $fn = 72);
+    // --- Smiling mouth opening ---
+    hull() {
+        translate([mouth_x, 0, mouth_z])
+            rotate([0, 88, 0])
+                cylinder(d = mouth_h, h = 0.8, center = true, $fn = 48);
+        translate([mouth_x,  mouth_w / 2, mouth_z + mouth_curve])
+            rotate([0, 88, 0])
+                cylinder(d = mouth_h, h = 0.8, center = true, $fn = 48);
+        translate([mouth_x, -mouth_w / 2, mouth_z + mouth_curve])
+            rotate([0, 88, 0])
+                cylinder(d = mouth_h, h = 0.8, center = true, $fn = 48);
+    }
 
     // --- Twin jet tunnels from mouth to behind-eye exits ---
     // starboard jet
