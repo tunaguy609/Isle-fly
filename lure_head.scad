@@ -32,6 +32,14 @@ collar_d      = 15;             // mm
 collar_len    = 6;              // mm
 collar_x      = rx - collar_len / 2;  // centred at back of egg
 
+// --- Jets (new) ---
+jet_d         = 2.4;            // mm jet tunnel diameter
+jet_start_x   = chin_x + 1.0;   // start near mouth
+jet_start_z   = chin_z + 0.8;   // lift slightly into body
+jet_exit_x    = eye_x_offset + 4.5;   // exit behind eyes (+X is toward tail)
+jet_exit_y    = eye_y_offset - 0.8;   // just inboard of eye pocket rim
+jet_exit_z    = 0.2;            // near eye center height
+
 // ============================================================
 //  Assembly
 // ============================================================
@@ -53,18 +61,36 @@ difference() {
             cylinder(d = bore_d, h = head_length + collar_len, $fn = 30);
 
     // --- Eye socket – starboard (right, +Y side) ---
+    // pushed slightly deeper so no thin skin remains over pocket
     translate([eye_x_offset, eye_y_offset, 0])
         rotate([90, 0, 0])
-            cylinder(d = eye_d, h = eye_depth + 1, $fn = 60);
+            cylinder(d = eye_d, h = eye_depth + 2.0, $fn = 80);
 
     // --- Eye socket – port (left, -Y side) ---
     translate([eye_x_offset, -eye_y_offset, 0])
         rotate([-90, 0, 0])
-            cylinder(d = eye_d, h = eye_depth + 1, $fn = 60);
+            cylinder(d = eye_d, h = eye_depth + 2.0, $fn = 80);
 
     // --- Chin slot (aggressive horizontal oval mouth) ---
     translate([chin_x, 0, chin_z])
         rotate([0, 30, 0])                 // steeper face = more action/smoke
             scale([chin_w/chin_h, 1, 1])   // horizontal oval
                 cylinder(d = chin_h, h = ry * 1.2, $fn = 72);
+
+    // --- Twin jet tunnels from mouth to behind-eye exits ---
+    // starboard jet
+    hull() {
+        translate([jet_start_x,  1.8, jet_start_z])
+            rotate([0, 90, 0]) cylinder(d = jet_d, h = 0.8, center = true, $fn = 36);
+        translate([jet_exit_x,   jet_exit_y, jet_exit_z])
+            rotate([0, 90, 0]) cylinder(d = jet_d, h = 0.8, center = true, $fn = 36);
+    }
+
+    // port jet
+    hull() {
+        translate([jet_start_x, -1.8, jet_start_z])
+            rotate([0, 90, 0]) cylinder(d = jet_d, h = 0.8, center = true, $fn = 36);
+        translate([jet_exit_x,  -jet_exit_y, jet_exit_z])
+            rotate([0, 90, 0]) cylinder(d = jet_d, h = 0.8, center = true, $fn = 36);
+    }
 }
