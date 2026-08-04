@@ -38,17 +38,20 @@ chin_x        = -rx + 3.5;      // mm, position along X from centre (further for
 chin_z        = -(ry * 0.78);   // mm, position on underside (lower)
 
 // --- Skirt collar (rear cylinder) ---
-collar_d      = 15;             // mm
-collar_len    = 6;              // mm
-collar_x      = rx - collar_len / 2;  // centred at back of egg
+collar_d        = 15;             // mm
+collar_len      = 32;             // mm – restored full length
+collar_x        = rx + collar_len / 2 - 4;  // tucks 4mm into head for smoother blend
+collar_blend_x  = rx - 3.0;      // mm, blend starts slightly inside the head
+collar_blend_d  = 18.0;          // mm, wider blend diameter to merge collar into head
 
-// --- Jets (new) ---
-jet_d         = 2.4;            // mm jet tunnel diameter
-jet_start_x   = chin_x + 1.0;   // start near mouth
-jet_start_z   = chin_z + 0.8;   // lift slightly into body
-jet_exit_x    = eye_x_offset + 4.5;   // exit behind eyes (+X is toward tail)
-jet_exit_y    = eye_y_offset - 0.8;   // just inboard of eye pocket rim
-jet_exit_z    = 0.2;            // near eye center height
+// --- Jets ---
+jet_d           = 2.4;           // mm jet tunnel diameter
+jet_start_x     = chin_x + 1.0;  // start near mouth
+jet_start_z     = chin_z + 0.8;  // lift slightly into body
+// Exits at the crown (top of head), behind the eyes and well clear of eye sockets
+jet_exit_x      = eye_x_offset + 4.5;  // behind eyes toward tail
+jet_exit_y      = 1.2;                 // close to centreline at crown
+jet_exit_z      = ry - 1.0;            // near the crown surface (+Z = top)
 
 // ============================================================
 //  Assembly
@@ -63,6 +66,15 @@ difference() {
         translate([collar_x, 0, 0])
             rotate([0, 90, 0])
                 cylinder(d = collar_d, h = collar_len, center = true, $fn = 60);
+
+        // Blend collar into head so it reads as one piece
+        hull() {
+            translate([collar_blend_x, 0, 0])
+                sphere(d = collar_blend_d, $fn = 60);
+            translate([rx + 1.5, 0, 0])
+                rotate([0, 90, 0])
+                    cylinder(d = collar_d, h = 0.1, center = true, $fn = 60);
+        }
     }
 
     // --- Center bore (offset above centreline for nose-down dive action) ---
@@ -75,15 +87,14 @@ difference() {
         sphere(r = cup_r, $fn = 80);
 
     // --- Eye socket – starboard (right, +Y side) ---
-    // pushed slightly deeper so no thin skin remains over pocket
     translate([eye_x_offset, eye_y_offset, 0])
         rotate([90, 0, 0])
-            cylinder(d = eye_d, h = eye_depth + 2.0, $fn = 80);
+            cylinder(d = eye_d, h = eye_depth + 0.5, $fn = 80);
 
     // --- Eye socket – port (left, -Y side) ---
     translate([eye_x_offset, -eye_y_offset, 0])
         rotate([-90, 0, 0])
-            cylinder(d = eye_d, h = eye_depth + 2.0, $fn = 80);
+            cylinder(d = eye_d, h = eye_depth + 0.5, $fn = 80);
 
     // --- Chin slot (aggressive horizontal oval mouth) ---
     translate([chin_x, 0, chin_z])
@@ -91,20 +102,22 @@ difference() {
             scale([chin_w/chin_h, 1, 1])   // horizontal oval
                 cylinder(d = chin_h, h = ry * 1.2, $fn = 72);
 
-    // --- Twin jet tunnels from mouth to behind-eye exits ---
+    // --- Twin jet tunnels from chin mouth to crown exits ---
+    // Jets rise from under the chin and exit through the top of the head,
+    // behind the eye sockets and well clear of them.
     // starboard jet
     hull() {
         translate([jet_start_x,  1.8, jet_start_z])
-            rotate([0, 90, 0]) cylinder(d = jet_d, h = 0.8, center = true, $fn = 36);
+            sphere(d = jet_d, $fn = 36);
         translate([jet_exit_x,   jet_exit_y, jet_exit_z])
-            rotate([0, 90, 0]) cylinder(d = jet_d, h = 0.8, center = true, $fn = 36);
+            sphere(d = jet_d, $fn = 36);
     }
 
     // port jet
     hull() {
         translate([jet_start_x, -1.8, jet_start_z])
-            rotate([0, 90, 0]) cylinder(d = jet_d, h = 0.8, center = true, $fn = 36);
+            sphere(d = jet_d, $fn = 36);
         translate([jet_exit_x,  -jet_exit_y, jet_exit_z])
-            rotate([0, 90, 0]) cylinder(d = jet_d, h = 0.8, center = true, $fn = 36);
+            sphere(d = jet_d, $fn = 36);
     }
 }
