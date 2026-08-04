@@ -35,16 +35,11 @@ collar_x      = rx - collar_len / 2;  // centred at back of egg
 
 // --- Nose trim ---
 nose_flat_x   = -rx + 1.2;      // mm, slightly trims the nose tip for a flatter face
-chin_slot_x   = mouth_x + 0.6;  // mm, trims the lower lip with a defined chin slot
-chin_slot_z   = mouth_z - 1.3;  // mm, places the slot below the leader bore
-chin_slot_w   = bore_d + 2.8;   // mm, slot width across the lower lip
-chin_slot_h   = 2.4;            // mm, slot height to clear the chin protrusion
-chin_slot_len = 2.6;            // mm, slot length into the nose
 
 // --- Jets (new) ---
 jet_d         = 2.4;            // mm jet tunnel diameter
-jet_start_x   = mouth_x + 0.6;  // start near mouth
-jet_start_z   = mouth_z - 1.2;  // start from the lower lip of the cup
+jet_start_x   = mouth_x + 0.1;  // start from the original chin vent position
+jet_start_z   = mouth_z - 2.2;  // start from the underside/chin instead of the mouth lip
 jet_exit_x    = eye_x_offset + 2.5;   // exit near the crown, just aft of the eyes
 jet_exit_y    = 3.2;                  // keep jets close to the centreline as they rise
 jet_exit_z    = ry - 0.4;             // exit through the top of the head
@@ -91,10 +86,6 @@ difference() {
                 translate([0.85, 0, 0])
                     cylinder(d = mouth_cup_d - mouth_h, h = 2.8, center = true, $fn = 72);
             }
-
-    // --- Chin slot to trim the lower nose lip under the mouth ---
-    translate([chin_slot_x, 0, chin_slot_z])
-        cube([chin_slot_len, chin_slot_w, chin_slot_h], center = true);
 
 
     // --- Twin jet tunnels from mouth to behind-eye exits ---
