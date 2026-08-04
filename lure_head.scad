@@ -87,14 +87,16 @@ difference() {
         sphere(r = cup_r, $fn = 80);
 
     // --- Eye socket – starboard (right, +Y side) ---
-    translate([eye_x_offset, eye_y_offset, 0])
+    // Translate origin beyond the surface (ry + 1) so the cylinder enters from outside
+    // and punches cleanly through, leaving no skin flap over the recess.
+    translate([eye_x_offset, ry + 1, 0])
         rotate([90, 0, 0])
-            cylinder(d = eye_d, h = eye_depth + 0.5, $fn = 80);
+            cylinder(d = eye_d, h = eye_depth + 2.0, $fn = 80);
 
     // --- Eye socket – port (left, -Y side) ---
-    translate([eye_x_offset, -eye_y_offset, 0])
+    translate([eye_x_offset, -(ry + 1), 0])
         rotate([-90, 0, 0])
-            cylinder(d = eye_d, h = eye_depth + 0.5, $fn = 80);
+            cylinder(d = eye_d, h = eye_depth + 2.0, $fn = 80);
 
     // --- Chin slot (aggressive horizontal oval mouth) ---
     translate([chin_x, 0, chin_z])
