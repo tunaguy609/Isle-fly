@@ -34,7 +34,7 @@ eye_x_offset  = 2;               // mm, forward of centre
 gill_w        = 14;              // mm, fore-aft width of gill plate ellipse
 gill_h        = 11;              // mm, vertical height of gill plate ellipse
 gill_protrude = 2.8;             // mm, how far the bump stands proud of the head surface
-gill_x        = eye_x_offset;    // mm, aligned with eye X position
+gill_x        = eye_x_offset - 6; // mm, moved forward toward nose for correct placement
 
 // --- Chin slot ---
 chin_w        = 14;             // mm, width of horizontal oval mouth (aggressive)
@@ -73,25 +73,30 @@ difference() {
                 cylinder(d = collar_d, h = collar_len, center = true, $fn = 60);
 
         // Gill plate bump – starboard (+Y)
-        // A lens-shaped protrusion: scale a sphere to an ellipse then clip to a half
-        translate([gill_x, ry - 0.2, 0])
-            rotate([0, 0, 0])
-                scale([gill_w/gill_h, 1, 1])
-                    intersection() {
-                        sphere(d = gill_h, $fn = 80);
-                        translate([0, gill_protrude / 2, 0])
-                            cube([gill_w + 2, gill_protrude, gill_h + 2], center = true);
-                    }
+        // hull() between a proud sphere and a thin disc at the head surface
+        // so the plate grows organically out of the head with no hard seam.
+        translate([gill_x, 0, 0])
+            hull() {
+                // Thin disc sitting flush on the head surface
+                translate([0, ry - 0.1, 0])
+                    scale([gill_w / gill_h, 1, 1])
+                        cylinder(d = gill_h, h = 0.1, center = true, $fn = 80);
+                // Proud sphere that forms the bump peak
+                translate([0, ry + gill_protrude - gill_h * 0.18, 0])
+                    scale([gill_w / gill_h, 1, 1])
+                        sphere(d = gill_h * 0.55, $fn = 60);
+            }
 
         // Gill plate bump – port (-Y)
-        translate([gill_x, -(ry - 0.2), 0])
-            rotate([0, 0, 0])
-                scale([gill_w/gill_h, 1, 1])
-                    intersection() {
-                        sphere(d = gill_h, $fn = 80);
-                        translate([0, -(gill_protrude / 2), 0])
-                            cube([gill_w + 2, gill_protrude, gill_h + 2], center = true);
-                    }
+        translate([gill_x, 0, 0])
+            hull() {
+                translate([0, -(ry - 0.1), 0])
+                    scale([gill_w / gill_h, 1, 1])
+                        cylinder(d = gill_h, h = 0.1, center = true, $fn = 80);
+                translate([0, -(ry + gill_protrude - gill_h * 0.18), 0])
+                    scale([gill_w / gill_h, 1, 1])
+                        sphere(d = gill_h * 0.55, $fn = 60);
+            }
         hull() {
             translate([collar_blend_x, 0, 0])
                 sphere(d = collar_blend_d, $fn = 60);
