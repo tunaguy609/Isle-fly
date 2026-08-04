@@ -21,12 +21,12 @@ eye_depth     = 1.8;            // mm, recess depth
 eye_x_offset  = 2;              // mm, forward of centre
 eye_y_offset  = ry - 0.5;       // places on the side of the head
 
-// --- Smiling mouth ---
-mouth_w       = 14;             // mm, width of the smile opening
-mouth_h       = 4.0;            // mm, thickness of the smile cut
-mouth_x       = -rx + 1.6;      // mm, ties the smile into the nose and leader entry
-mouth_z       = -(ry * 0.48);   // mm, raises the mouth toward the leader hole
-mouth_curve   = 1.6;            // mm, lifts the corners for a smile
+// --- Cupped mouth ---
+mouth_w       = 14;             // mm, width of the cupped mouth
+mouth_h       = 4.8;            // mm, height of the mouth opening
+mouth_x       = -rx + 1.4;      // mm, keep the mouth integrated with the nose
+mouth_z       = -1.0;           // mm, center the cup around the leader bore
+mouth_cup_d   = 11.5;           // mm, diameter of the horizontal cup
 
 // --- Skirt collar (rear cylinder) ---
 collar_d      = 15;             // mm
@@ -39,7 +39,7 @@ nose_flat_x   = -rx + 1.2;      // mm, slightly trims the nose tip for a flatter
 // --- Jets (new) ---
 jet_d         = 2.4;            // mm jet tunnel diameter
 jet_start_x   = mouth_x + 0.6;  // start near mouth
-jet_start_z   = mouth_z + 0.6;  // lift slightly into body
+jet_start_z   = mouth_z - 1.2;  // start from the lower lip of the cup
 jet_exit_x    = eye_x_offset + 2.5;   // exit near the crown, just aft of the eyes
 jet_exit_y    = 3.2;                  // keep jets close to the centreline as they rise
 jet_exit_z    = ry - 0.4;             // exit through the top of the head
@@ -78,20 +78,22 @@ difference() {
         rotate([-90, 0, 0])
             cylinder(d = eye_d, h = eye_depth + 4.0, $fn = 80);
 
-    // --- Smiling mouth opening blended into the leader entry ---
+    // --- Horizontally cupped mouth blended into the leader entry ---
+    translate([mouth_x, 0, mouth_z])
+        rotate([0, 90, 0])
+            difference() {
+                cylinder(d = mouth_cup_d, h = 3.2, center = true, $fn = 72);
+                translate([0.6, 0, 0])
+                    cylinder(d = mouth_cup_d - mouth_h, h = 3.6, center = true, $fn = 72);
+            }
+
     hull() {
-        translate([-rx + 0.4, 0, 0])
+        translate([-rx + 0.5, 0, 0])
             rotate([0, 90, 0])
-                cylinder(d = bore_d + 1.2, h = 0.8, center = true, $fn = 40);
-        translate([mouth_x, 0, mouth_z])
-            rotate([0, 88, 0])
-                cylinder(d = mouth_h, h = 0.8, center = true, $fn = 48);
-        translate([mouth_x,  mouth_w / 2, mouth_z + mouth_curve])
-            rotate([0, 88, 0])
-                cylinder(d = mouth_h, h = 0.8, center = true, $fn = 48);
-        translate([mouth_x, -mouth_w / 2, mouth_z + mouth_curve])
-            rotate([0, 88, 0])
-                cylinder(d = mouth_h, h = 0.8, center = true, $fn = 48);
+                cylinder(d = bore_d + 1.6, h = 1.0, center = true, $fn = 40);
+        translate([mouth_x - 0.6, 0, mouth_z])
+            rotate([0, 90, 0])
+                cylinder(d = mouth_h, h = 1.2, center = true, $fn = 48);
     }
 
     // --- Twin jet tunnels from mouth to behind-eye exits ---
