@@ -1,6 +1,6 @@
 // ============================================================
 //  Blue Eye Konahead Trolling Lure Head
-//  42mm long x 21mm max diameter
+//  42mm long x 23mm max diameter
 //  3D print orientation: nose facing down / flat face up
 //
 //  Swim action features:
@@ -10,7 +10,7 @@
 
 // --- Main dimensions ---
 head_length   = 42;   // mm, nose to skirt collar
-max_diameter  = 21;   // mm, widest point
+max_diameter  = 23;   // mm, widest point
 
 // --- Derived ---
 rx = head_length / 2;          // X half-axis (fore-aft)
