@@ -33,6 +33,8 @@ vent_port_lift = 0.8;            // mm, extends the exit cut above the crown
 collar_d      = 15;             // mm
 collar_len    = 24;             // mm
 collar_x      = rx + collar_len / 2;  // starts at the back of the head and extends aft
+ramp_base_x   = rx - 2.5;       // mm, starts the taper slightly inside the back of the head
+ramp_base_d   = 18.5;           // mm, broad base diameter for a smoother transition
 ramp_pos_from_tail = 12;        // mm, ramp starts this far forward from the tail end of the spigot
 ramp_len      = 3;              // mm, retaining ramp length
 ramp_peak_d   = 17;             // mm, retaining ramp peak diameter
@@ -71,6 +73,15 @@ difference() {
         translate([collar_x, 0, 0])
             rotate([0, 90, 0])
                 cylinder(d = collar_d, h = collar_len, center = true, $fn = 60);
+
+        // Smooth taper from head into spigot
+        hull() {
+            translate([ramp_base_x, 0, 0])
+                sphere(d = ramp_base_d, $fn = 60);
+            translate([rx + 2.0, 0, 0])
+                rotate([0, 90, 0])
+                    cylinder(d = collar_d, h = 0.1, center = true, $fn = 60);
+        }
 
         // Skirt retaining ramp on spigot
         translate([rx + ramp_pos_from_tail + ramp_len / 2, 0, 0])
