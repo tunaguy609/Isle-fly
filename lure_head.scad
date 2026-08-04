@@ -22,11 +22,11 @@ eye_x_offset  = 2;              // mm, forward of centre
 eye_y_offset  = ry - 0.5;       // places on the side of the head
 
 // --- Cupped mouth ---
-mouth_w       = 14;             // mm, width of the cupped mouth
-mouth_h       = 4.8;            // mm, height of the mouth opening
-mouth_x       = -rx + 0.9;      // mm, pull the mouth cut back into the nose
-mouth_z       = -0.6;           // mm, keep the cup centered around the leader bore
-mouth_cup_d   = 10.8;           // mm, diameter of the horizontal cup
+mouth_h       = 4.2;            // mm, height of the mouth opening
+mouth_x       = -rx + 0.7;      // mm, keep the chugger face close to the nose
+mouth_z       = -0.2;           // mm, keep the cup nearly centered on the leader bore
+mouth_cup_d   = 9.2;            // mm, diameter of the small chugger cup
+mouth_len     = 1.8;            // mm, shallow cup depth for a basic chugger nose
 
 // --- Skirt collar (rear cylinder) ---
 collar_d      = 15;             // mm
@@ -35,6 +35,17 @@ collar_x      = rx - collar_len / 2;  // centred at back of egg
 
 // --- Nose trim ---
 nose_flat_x   = -rx + 1.2;      // mm, slightly trims the nose tip for a flatter face
+nose_relief_x = mouth_x + 0.7;  // mm, trims the lower lip so it does not protrude past the bore/mouth
+nose_relief_z = mouth_z - 0.9;  // mm, keep relief focused on the lower nose lip only
+nose_relief_d = bore_d + 3.0;   // mm, enough relief to clean up the protrusion without hollowing the nose
+
+// --- Jets ---
+jet_d         = 2.0;            // mm jet tunnel diameter
+jet_start_x   = mouth_x + 0.2;  // start just behind the chugger face
+jet_start_z   = mouth_z - 1.4;  // start from the relieved chin area
+jet_exit_x    = eye_x_offset + 2.5;   // exit near the crown, just aft of the eyes
+jet_exit_y    = 3.0;                  // keep jets close to the centreline as they rise
+jet_exit_z    = ry - 0.5;             // exit through the top of the head
 
 // ============================================================
 //  Assembly
@@ -74,9 +85,29 @@ difference() {
     translate([mouth_x, 0, mouth_z])
         rotate([0, 90, 0])
             difference() {
-                cylinder(d = mouth_cup_d, h = 2.2, center = true, $fn = 72);
-                translate([0.85, 0, 0])
-                    cylinder(d = mouth_cup_d - mouth_h, h = 2.8, center = true, $fn = 72);
+                cylinder(d = mouth_cup_d, h = mouth_len, center = true, $fn = 72);
+                translate([0.55, 0, 0])
+                    cylinder(d = mouth_cup_d - mouth_h, h = mouth_len + 0.6, center = true, $fn = 72);
             }
+
+    // --- Lower nose lip relief to remove protrusion ahead of the bore/mouth ---
+    translate([nose_relief_x, 0, nose_relief_z])
+        rotate([0, 90, 0])
+            cylinder(d = nose_relief_d, h = 2.8, center = true, $fn = 48);
+
+    // --- Twin jet tunnels from chin relief to behind-eye exits ---
+    hull() {
+        translate([jet_start_x,  1.6, jet_start_z])
+            rotate([0, 90, 0]) cylinder(d = jet_d, h = 0.8, center = true, $fn = 36);
+        translate([jet_exit_x,   jet_exit_y, jet_exit_z])
+            rotate([0, 90, 0]) cylinder(d = jet_d, h = 0.8, center = true, $fn = 36);
+    }
+
+    hull() {
+        translate([jet_start_x, -1.6, jet_start_z])
+            rotate([0, 90, 0]) cylinder(d = jet_d, h = 0.8, center = true, $fn = 36);
+        translate([jet_exit_x,  -jet_exit_y, jet_exit_z])
+            rotate([0, 90, 0]) cylinder(d = jet_d, h = 0.8, center = true, $fn = 36);
+    }
 
 }
