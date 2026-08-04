@@ -35,10 +35,11 @@ collar_x      = rx - collar_len / 2;  // centred at back of egg
 
 // --- Nose trim ---
 nose_flat_x   = -rx + 1.2;      // mm, slightly trims the nose tip for a flatter face
-nose_relief_x = mouth_x + 1.2;  // mm, trims the lower lip so it does not protrude past the mouth/bore
-nose_relief_z = mouth_z - 1.1;  // mm, keep relief focused on the lower nose lip only
-nose_relief_d = bore_d + 4.8;   // mm, broader than the leader bore to clear the protrusion cleanly
-nose_relief_len = 3.8;          // mm, longer relief to pull the lip farther back
+chin_slot_x   = mouth_x + 0.6;  // mm, trims the lower lip with a defined chin slot
+chin_slot_z   = mouth_z - 1.3;  // mm, places the slot below the leader bore
+chin_slot_w   = bore_d + 2.8;   // mm, slot width across the lower lip
+chin_slot_h   = 2.4;            // mm, slot height to clear the chin protrusion
+chin_slot_len = 2.6;            // mm, slot length into the nose
 
 // --- Jets (new) ---
 jet_d         = 2.4;            // mm jet tunnel diameter
@@ -91,10 +92,9 @@ difference() {
                     cylinder(d = mouth_cup_d - mouth_h, h = 2.8, center = true, $fn = 72);
             }
 
-    // --- Lower nose lip relief to remove protrusion ahead of the bore/mouth ---
-    translate([nose_relief_x, 0, nose_relief_z])
-        rotate([0, 90, 0])
-            cylinder(d = nose_relief_d, h = nose_relief_len, center = true, $fn = 48);
+    // --- Chin slot to trim the lower nose lip under the mouth ---
+    translate([chin_slot_x, 0, chin_slot_z])
+        cube([chin_slot_len, chin_slot_w, chin_slot_h], center = true);
 
 
     // --- Twin jet tunnels from mouth to behind-eye exits ---
