@@ -37,6 +37,9 @@ collar_x      = rx - collar_len / 2;  // centred at back of egg
 // --- Nose trim ---
 nose_flat_x   = -rx + 1.2;      // mm, slightly trims the nose tip for a flatter face
 
+// --- Leader bore ---
+leader_bore_d = 2.5;            // mm, through-bore for leader line
+
 module jet_vent(y_sign = 1) {
     hull() {
         translate([vent_start_x, y_sign * vent_y_start, vent_start_z])
@@ -68,6 +71,10 @@ difference() {
     // --- Nose flattening cut ---
     translate([nose_flat_x - 10, 0, 0])
         cube([20, max_diameter * 2, max_diameter * 2], center = true);
+
+    // --- Leader line bore ---
+    rotate([0, 90, 0])
+        cylinder(d = leader_bore_d, h = head_length + collar_len + 4, center = true, $fn = 48);
 
     // --- Eye socket – starboard (right, +Y side) ---
     translate([eye_x_offset, eye_y_offset + eye_depth, 0])
