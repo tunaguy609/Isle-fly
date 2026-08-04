@@ -33,6 +33,8 @@ vent_port_lift = 0.8;            // mm, extends the exit cut above the crown
 collar_d      = 15;             // mm
 collar_len    = 22;             // mm
 collar_x      = rx + collar_len / 2 - 4;  // tucks 4mm into the head for a smoother blend
+collar_blend_x = rx - 3.0;      // mm, blend starts slightly inside the head
+collar_blend_d = 18.0;          // mm, wider blend diameter to merge collar into head
 
 // --- Nose trim ---
 nose_flat_x   = -rx + 1.2;      // mm, slightly trims the nose tip for a flatter face
@@ -68,6 +70,15 @@ difference() {
         translate([collar_x, 0, 0])
             rotate([0, 90, 0])
                 cylinder(d = collar_d, h = collar_len, center = true, $fn = 60);
+
+        // Blend collar into head so it reads as one piece
+        hull() {
+            translate([collar_blend_x, 0, 0])
+                sphere(d = collar_blend_d, $fn = 60);
+            translate([rx + 1.5, 0, 0])
+                rotate([0, 90, 0])
+                    cylinder(d = collar_d, h = 0.1, center = true, $fn = 60);
+        }
     }
 
     // --- Nose flattening cut ---
