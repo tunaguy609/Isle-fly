@@ -39,6 +39,8 @@ nose_flat_x   = -rx + 1.2;      // mm, slightly trims the nose tip for a flatter
 
 // --- Leader bore ---
 leader_bore_d = 2.5;            // mm, through-bore for leader line
+leader_flare_d = 4.5;           // mm, flared nose entry for easier rigging
+leader_flare_len = 3.0;         // mm, length of the nose flare
 
 module jet_vent(y_sign = 1) {
     hull() {
@@ -75,6 +77,11 @@ difference() {
     // --- Leader line bore ---
     rotate([0, 90, 0])
         cylinder(d = leader_bore_d, h = head_length + collar_len + 4, center = true, $fn = 48);
+
+    // --- Leader line nose flare ---
+    translate([nose_flat_x - 0.01, 0, 0])
+        rotate([0, -90, 0])
+            cylinder(d1 = leader_flare_d, d2 = leader_bore_d, h = leader_flare_len, $fn = 48);
 
     // --- Eye socket – starboard (right, +Y side) ---
     translate([eye_x_offset, eye_y_offset + eye_depth, 0])
