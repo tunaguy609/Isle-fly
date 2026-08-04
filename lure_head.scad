@@ -36,9 +36,9 @@ collar_x      = rx - collar_len / 2;  // centred at back of egg
 jet_d         = 2.4;            // mm jet tunnel diameter
 jet_start_x   = chin_x + 1.0;   // start near mouth
 jet_start_z   = chin_z + 0.8;   // lift slightly into body
-jet_exit_x    = eye_x_offset + 4.5;   // exit behind eyes (+X is toward tail)
-jet_exit_y    = eye_y_offset - 0.8;   // just inboard of eye pocket rim
-jet_exit_z    = 0.2;            // near eye center height
+jet_exit_x    = eye_x_offset + 2.5;   // exit near the crown, just aft of the eyes
+jet_exit_y    = 3.2;                  // keep jets close to the centreline as they rise
+jet_exit_z    = ry - 0.4;             // exit through the top of the head
 
 // ============================================================
 //  Assembly
@@ -61,15 +61,14 @@ difference() {
             cylinder(d = bore_d, h = head_length + collar_len, $fn = 30);
 
     // --- Eye socket – starboard (right, +Y side) ---
-    // pushed slightly deeper so no thin skin remains over pocket
-    translate([eye_x_offset, eye_y_offset, 0])
+    translate([eye_x_offset, eye_y_offset + eye_depth, 0])
         rotate([90, 0, 0])
-            cylinder(d = eye_d, h = eye_depth + 2.0, $fn = 80);
+            cylinder(d = eye_d, h = eye_depth + 4.0, $fn = 80);
 
     // --- Eye socket – port (left, -Y side) ---
-    translate([eye_x_offset, -eye_y_offset, 0])
+    translate([eye_x_offset, -(eye_y_offset + eye_depth), 0])
         rotate([-90, 0, 0])
-            cylinder(d = eye_d, h = eye_depth + 2.0, $fn = 80);
+            cylinder(d = eye_d, h = eye_depth + 4.0, $fn = 80);
 
     // --- Chin slot (aggressive horizontal oval mouth) ---
     translate([chin_x, 0, chin_z])
