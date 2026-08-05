@@ -1,19 +1,24 @@
 // ============================================================
 //  Blue Eye Konahead Trolling Lure Head
-//  42mm long x 21mm max diameter
+//  34mm long x 24mm max diameter – cedar-plug action profile
 //  3D print orientation: nose facing down / flat face up
 // ============================================================
 
 // --- Main dimensions ---
-head_length   = 42;   // mm, nose to skirt collar
+head_length   = 34;   // mm, nose to skirt collar – shorter/stubbier for cedar-plug action
 max_diameter  = 24;   // mm, widest point
 
 // --- Derived ---
 rx = head_length / 2;          // X half-axis (fore-aft)
 ry = max_diameter / 2;         // Y/Z half-axis (radial)
 
+// --- Nose face (flat/cupped dish – cedar plug water-catch) ---
+face_d        = 16.0;           // mm, diameter of flat face cutout
+face_depth    = 3.0;            // mm, depth of the dish
+
 // --- Bore (line-through hole) ---
 bore_d        = 2.0;            // mm, center hole for leader/cable
+bore_z_offset = 1.5;            // mm, upward offset of bore exit at nose (tows nose-down for action)
 
 // --- Eye sockets ---
 eye_d         = 12;             // mm, eye recess diameter
@@ -22,15 +27,15 @@ eye_x_offset  = 2;              // mm, forward of centre
 eye_y_offset  = ry + 1.0;       // start outside the head surface so the cut enters cleanly – no flap
 
 // --- Chin slot ---
-chin_w        = 14;             // mm, width of horizontal oval mouth (aggressive)
+chin_w        = 16;             // mm, width of horizontal oval mouth – widened for more action
 chin_h        = 4.5;            // mm, height of oval mouth (flatter = more aggressive)
-chin_x        = -rx + 3.5;      // mm, position along X from centre (further forward)
+chin_x        = -rx + 1.5;      // mm, position along X – moved to nose for cedar-plug dart
 chin_z        = -(ry * 0.78);   // mm, position on underside (lower)
 
 // --- Skirt collar (rear cylinder) ---
 collar_d      = 15;             // mm, outer diameter
 collar_bore_d = 14;             // mm, inner bore diameter – hollow to accept skirt sleeve
-collar_len    = 32;             // mm, full collar length restored
+collar_len    = 24;             // mm, shorter collar – less stabilisation, more head swing
 collar_x      = rx + collar_len / 2 - 4;  // tucks 4mm into head for smooth blend
 
 // --- Head-to-collar blend ---
@@ -90,10 +95,20 @@ difference() {
                 cylinder(d = flair_od, h = flair_end_x - flair_mid_x, center = true, $fn = 60);
     }
 
-    // --- Center bore (nose to tail) ---
-    translate([-rx, 0, 0])
-        rotate([0, 90, 0])
-            cylinder(d = bore_d, h = head_length + collar_len, $fn = 30);
+    // --- Center bore (nose to tail) – offset upward at nose so lure tows nose-down ---
+    hull() {
+        translate([-rx, 0, bore_z_offset])
+            rotate([0, 90, 0])
+                cylinder(d = bore_d, h = 0.1, $fn = 30);
+        translate([rx + collar_len / 2, 0, 0])
+            rotate([0, 90, 0])
+                cylinder(d = bore_d, h = 0.1, $fn = 30);
+    }
+
+    // --- Nose face – flat dish cutout for cedar-plug water-catch action ---
+    translate([-rx - 0.1, 0, 0])
+        rotate([0, -90, 0])
+            cylinder(d = face_d, h = face_depth + 0.1, $fn = 60);
 
     // --- Skirt collar bore (hollow interior for skirt sleeve) ---
     translate([rx, 0, 0])
@@ -110,9 +125,9 @@ difference() {
         rotate([-90, 0, 0])
             cylinder(d = eye_d, h = eye_depth + 0.5, $fn = 80);
 
-    // --- Chin slot (aggressive horizontal oval mouth) ---
+    // --- Chin slot (steepened to 45° for cedar-plug dart/yaw action) ---
     translate([chin_x, 0, chin_z])
-        rotate([0, 30, 0])                 // steeper face = more action/smoke
+        rotate([0, 45, 0])                 // steeper face = more action/smoke
             scale([chin_w/chin_h, 1, 1])   // horizontal oval
                 cylinder(d = chin_h, h = ry * 1.2, $fn = 72);
 
