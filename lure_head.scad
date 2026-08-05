@@ -39,7 +39,7 @@ gill_groove_d   = 1.2;              // mm, groove tube diameter (width/depth of 
 gill_torus_z    = -2.5;             // mm, torus centre below head mid-plane (tilts arc backward)
 
 // --- Chin slot ---
-chin_w        = 14;             // mm, width of horizontal oval mouth (aggressive)
+chin_w        = 10;             // mm, width of horizontal oval mouth
 chin_h        = 4.5;            // mm, height of oval mouth (flatter = more aggressive)
 chin_x        = -rx + 3.5;      // mm, position along X from centre (further forward)
 chin_z        = -(ry * 0.50);   // mm, position on underside (flush with belly surface)
@@ -138,7 +138,7 @@ difference() {
     translate([chin_x, 0, chin_z])
         rotate([0, 30, 0])                 // steeper face = more action/smoke
             scale([chin_w/chin_h, 1, 1])   // horizontal oval
-                cylinder(d = chin_h, h = ry * 1.2, $fn = 72);
+                cylinder(d = chin_h, h = ry * 1.0, $fn = 72);
 
 
 }
