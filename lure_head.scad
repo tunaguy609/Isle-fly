@@ -67,21 +67,21 @@ difference() {
             sphere(d = blend_d, $fn = 60);
 
         // Skirt collar + flair: single tapered cone from shoulder to tail
-        // rotate([0,-90,0]) points +Z toward +X, so the cylinder extends tailward.
-        // d1 (base at flair_start_x) = collar_d (narrow shoulder), d2 = flair_od (wide tail).
+        // d1 = collar_d at the shoulder end (tucked under the head),
+        // d2 = flair_od at the tail – one continuous ramp, no separate pieces
         translate([flair_start_x, 0, 0])
-            rotate([0, -90, 0])
+            rotate([0, 90, 0])
                 cylinder(d1 = collar_d, d2 = flair_od, h = flair_len, $fn = 60);
     }
 
     // --- Center bore (nose to tail) ---
     translate([-rx, 0, 0])
-        rotate([0, -90, 0])
+        rotate([0, 90, 0])
             cylinder(d = bore_d, h = head_length + collar_len, $fn = 30);
 
     // --- Skirt collar bore (hollow interior for skirt sleeve) ---
     translate([rx, 0, 0])
-        rotate([0, -90, 0])
+        rotate([0, 90, 0])
             cylinder(d = collar_bore_d, h = collar_len, $fn = 60);
 
     // --- Eye socket – starboard (right, +Y side) ---
