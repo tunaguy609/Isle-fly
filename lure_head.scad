@@ -30,13 +30,6 @@ eye_d         = 8;               // mm, eye seat diameter (to hold eye insert)
 eye_depth     = 1.2;             // mm, shallow seat depth
 eye_x_offset  = 2;               // mm, forward of centre
 
-// --- Gill line (surface groove, flush with head) ---
-// A thin crescent groove cut into the head surface traces the gill cover outline.
-// The torus centre is offset from the head centre so only its arc intersects the surface.
-gill_line_x     = eye_x_offset - 5; // mm, fore-aft centre of gill arc (forward of eyes)
-gill_torus_r    = 8.5;              // mm, major radius of torus arc (arc curvature)
-gill_groove_d   = 1.2;              // mm, groove tube diameter (width/depth of incised line)
-gill_torus_z    = -2.5;             // mm, torus centre below head mid-plane (tilts arc backward)
 
 // --- Chin slot ---
 chin_w        = 10;             // mm, width of horizontal oval mouth
@@ -118,21 +111,6 @@ difference() {
         rotate([-90, 0, 0])
             cylinder(d = eye_d, h = eye_depth + 2.0, $fn = 80);
 
-    // --- Gill line groove – starboard (+Y side) ---
-    // A torus arc skimming the head surface produces a flush curved incised line
-    // that traces the gill cover outline (curves back from eye toward belly).
-    translate([gill_line_x, ry - gill_torus_r + gill_groove_d * 0.5, gill_torus_z])
-        rotate([90, 0, 0])
-            rotate_extrude(angle = 110, $fn = 120)
-                translate([gill_torus_r, 0, 0])
-                    circle(d = gill_groove_d, $fn = 24);
-
-    // --- Gill line groove – port (-Y side) ---
-    translate([gill_line_x, -(ry - gill_torus_r + gill_groove_d * 0.5), gill_torus_z])
-        rotate([-90, 0, 0])
-            rotate_extrude(angle = 110, $fn = 120)
-                translate([gill_torus_r, 0, 0])
-                    circle(d = gill_groove_d, $fn = 24);
 
     // --- Chin slot (aggressive horizontal oval mouth) ---
     translate([chin_x, 0, chin_z])
