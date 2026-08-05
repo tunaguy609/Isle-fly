@@ -34,8 +34,10 @@ collar_x      = rx - collar_len / 2;  // centred at back of egg
 
 // --- Jets ---
 jet_d         = 3.2;            // mm jet tunnel diameter – wider bore for stronger water throw
-jet_start_x   = chin_x;         // entry flush with chin slot front face
-jet_start_z   = chin_z + 0.2;   // entry low in chin so tunnel angle rises steeply = aggressive throw
+// Entries sit on the flanks of the belly, clearly outside the chin slot (chin_w/2 = 7mm edge)
+jet_start_x   = chin_x + 2.0;          // slightly behind chin slot front face so entries are beside it, not in it
+jet_start_y   = chin_w / 2 + 2.0;      // outside the chin slot edge – clear separation
+jet_start_z   = chin_z + 0.5;          // on the belly surface beside the chin slot
 // Exits break through the crown (top) of the head, well clear of the eye sockets on the sides
 jet_exit_x    = eye_x_offset + 6.0;   // behind the eyes toward the tail
 jet_exit_y    = 1.5;                  // close to centreline at the crown – nowhere near eye pockets
@@ -62,15 +64,14 @@ difference() {
             cylinder(d = bore_d, h = head_length + collar_len, $fn = 30);
 
     // --- Eye socket – starboard (right, +Y side) ---
-    // pushed slightly deeper so no thin skin remains over pocket
     translate([eye_x_offset, eye_y_offset, 0])
         rotate([90, 0, 0])
-            cylinder(d = eye_d, h = eye_depth + 2.0, $fn = 80);
+            cylinder(d = eye_d, h = eye_depth + 0.5, $fn = 80);
 
     // --- Eye socket – port (left, -Y side) ---
     translate([eye_x_offset, -eye_y_offset, 0])
         rotate([-90, 0, 0])
-            cylinder(d = eye_d, h = eye_depth + 2.0, $fn = 80);
+            cylinder(d = eye_d, h = eye_depth + 0.5, $fn = 80);
 
     // --- Chin slot (aggressive horizontal oval mouth) ---
     translate([chin_x, 0, chin_z])
@@ -78,10 +79,10 @@ difference() {
             scale([chin_w/chin_h, 1, 1])   // horizontal oval
                 cylinder(d = chin_h, h = ry * 1.2, $fn = 72);
 
-    // --- Twin jet tunnels from mouth to behind-eye exits ---
+    // --- Twin jet tunnels: entries on belly flanks outside chin slot, exits through crown ---
     // starboard jet
     hull() {
-        translate([jet_start_x,  2.2, jet_start_z])
+        translate([jet_start_x,  jet_start_y, jet_start_z])
             rotate([0, 90, 0]) cylinder(d = jet_d, h = 0.8, center = true, $fn = 36);
         translate([jet_exit_x,   jet_exit_y, jet_exit_z])
             rotate([0, 90, 0]) cylinder(d = jet_d, h = 0.8, center = true, $fn = 36);
@@ -89,7 +90,7 @@ difference() {
 
     // port jet
     hull() {
-        translate([jet_start_x, -2.2, jet_start_z])
+        translate([jet_start_x, -jet_start_y, jet_start_z])
             rotate([0, 90, 0]) cylinder(d = jet_d, h = 0.8, center = true, $fn = 36);
         translate([jet_exit_x,  -jet_exit_y, jet_exit_z])
             rotate([0, 90, 0]) cylinder(d = jet_d, h = 0.8, center = true, $fn = 36);
