@@ -39,7 +39,7 @@ blend_d       = 21.0;          // mm, rear shoulder sphere diameter – proud hu
 // --- Skirt flair (exposed collar) ---
 // Exposed collar runs from shoulder rear edge (~x=30) to collar tail (~x=49), ~19mm
 // A cone ramps up from collar_d to flair_od over the first half, then holds flair_od to the tail
-flair_od      = 20.0;          // mm, flared outer diameter at the wide end
+flair_od      = 18.0;          // mm, flared outer diameter at the wide end
 flair_start_x = rx + blend_d/2 + 0.5;          // just behind the shoulder hump
 flair_mid_x   = flair_start_x + 9.5;           // halfway point – where ramp peaks
 flair_end_x   = rx + collar_len - 4;            // tail end of collar
