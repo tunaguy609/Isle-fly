@@ -42,7 +42,7 @@ gill_torus_z    = -2.5;             // mm, torus centre below head mid-plane (ti
 chin_w        = 14;             // mm, width of horizontal oval mouth (aggressive)
 chin_h        = 4.5;            // mm, height of oval mouth (flatter = more aggressive)
 chin_x        = -rx + 3.5;      // mm, position along X from centre (further forward)
-chin_z        = -(ry * 0.68);   // mm, position on underside (raised to close belly gap)
+chin_z        = -(ry * 0.50);   // mm, position on underside (flush with belly surface)
 
 // --- Skirt collar (rear cylinder) ---
 collar_d        = 15;             // mm, outer diameter
