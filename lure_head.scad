@@ -6,7 +6,7 @@
 
 // --- Main dimensions ---
 head_length   = 42;   // mm, nose to skirt collar
-max_diameter  = 21;   // mm, widest point
+max_diameter  = 24;   // mm, widest point
 
 // --- Derived ---
 rx = head_length / 2;          // X half-axis (fore-aft)
