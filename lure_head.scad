@@ -97,10 +97,10 @@ difference() {
     }
 
     // --- Skirt collar bore (hollow interior for skirt sleeve) ---
-    // Runs from inside the head all the way out the tail end of the collar.
-    translate([rx - 6, 0, 0])
+    // Starts at the rear face of the head and runs out the tail end of the collar.
+    translate([rx, 0, 0])
         rotate([0, 90, 0])
-            cylinder(d = collar_bore_d, h = collar_len + 10, $fn = 60);
+            cylinder(d = collar_bore_d, h = collar_len, $fn = 60);
 
     // --- Concave cupped nose face (creates zig-zag wobble action) ---
     translate([nose_x - cup_r + cup_depth, 0, 0])
