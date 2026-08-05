@@ -5,7 +5,7 @@
 //
 //  Swim action features:
 //    - Concave cupped nose face: deflects water to create zig-zag wobble
-//    - Leader bore offset +2 mm above centre: pulls nose down so lure dives
+//    - Leader bore angled: enters nose offset +2 mm above centre, exits collar centreline
 // ============================================================
 
 // --- Main dimensions ---
@@ -86,10 +86,15 @@ difference() {
         }
     }
 
-    // --- Center bore (offset above centreline for nose-down dive action) ---
-    translate([-rx, 0, bore_z_offset])
-        rotate([0, 90, 0])
-            cylinder(d = bore_d, h = head_length + collar_len, $fn = 30);
+    // --- Leader bore: angled from nose entry to collar centreline exit ---
+    // Enters at nose tip (z = +bore_z_offset) and exits at the tail end of the
+    // collar on the centreline (z = 0), so the leader runs straight through centre.
+    hull() {
+        translate([-rx, 0, bore_z_offset])
+            sphere(d = bore_d, $fn = 30);
+        translate([rx + collar_len - 4, 0, 0])
+            sphere(d = bore_d, $fn = 30);
+    }
 
     // --- Skirt collar bore (hollow interior for skirt sleeve) ---
     // Runs from inside the head all the way out the tail end of the collar.
