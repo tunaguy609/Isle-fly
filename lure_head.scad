@@ -39,13 +39,13 @@ chin_z        = -(ry * 0.50);   // mm, position on underside (flush with belly s
 
 // --- Jets ---
 jet_d         = 2.4;            // mm, jet tunnel diameter
-// Entry: positioned to intersect the chin slot opening on the belly
+// Entry: below the belly so the tunnel punches fully through from underside
 jet_entry_x   = chin_x + 1.0;  // mm, near the front of the chin slot
-jet_entry_z   = chin_z;         // mm, at the belly surface (inside chin slot cut)
+jet_entry_z   = chin_z - 4.0;  // mm, below belly surface – guarantees full through-cut
 jet_entry_y   = 1.8;            // mm, offset either side of centreline
-// Exit: breaks through the crown behind the eyes
+// Exit: above the crown so the tunnel punches fully through from the top
 jet_exit_x    = eye_x_offset + 5.0;  // mm, behind eyes toward tail
-jet_exit_z    = ry + 0.5;            // mm, above crown surface to ensure clean exit hole
+jet_exit_z    = ry + 3.0;            // mm, above crown surface – guarantees full through-cut
 jet_exit_y    = 1.2;                 // mm, close to centreline at crown
 
 // --- Skirt collar (rear cylinder) ---
