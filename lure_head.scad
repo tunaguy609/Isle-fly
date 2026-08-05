@@ -36,9 +36,10 @@ collar_x      = rx - collar_len / 2;  // centred at back of egg
 jet_d         = 3.2;            // mm jet tunnel diameter – wider bore for stronger water throw
 jet_start_x   = chin_x;         // entry flush with chin slot front face
 jet_start_z   = chin_z + 0.2;   // entry low in chin so tunnel angle rises steeply = aggressive throw
-jet_exit_x    = eye_x_offset + 4.5;   // exit behind eyes (+X is toward tail)
-jet_exit_y    = eye_y_offset - 0.8;   // just inboard of eye pocket rim
-jet_exit_z    = 0.2;            // near eye center height
+// Exits break through the crown (top) of the head, well clear of the eye sockets on the sides
+jet_exit_x    = eye_x_offset + 6.0;   // behind the eyes toward the tail
+jet_exit_y    = 1.5;                  // close to centreline at the crown – nowhere near eye pockets
+jet_exit_z    = ry + 1.0;             // above the crown surface so the cut fully breaks through
 
 // ============================================================
 //  Assembly
