@@ -34,8 +34,7 @@ collar_len    = 32;             // mm, full collar length restored
 collar_x      = rx + collar_len / 2 - 4;  // tucks 4mm into head for smooth blend
 
 // --- Head-to-collar blend ---
-blend_x       = rx - 3.0;      // mm, blend sphere centre slightly inside the rear of the head
-blend_d       = 18.0;          // mm, blend sphere diameter – wider than collar to fill the step
+blend_d       = 18.0;          // mm, rear shoulder sphere diameter – proud hump where body meets collar
 
 // --- Jets ---
 jet_d         = 3.2;            // mm jet tunnel diameter – wider bore for stronger water throw
@@ -62,14 +61,9 @@ difference() {
             rotate([0, 90, 0])
                 cylinder(d = collar_d, h = collar_len, center = true, $fn = 60);
 
-        // Blend collar into head – fills the step for a smooth organic transition
-        hull() {
-            translate([blend_x, 0, 0])
-                sphere(d = blend_d, $fn = 60);
-            translate([rx + 1.5, 0, 0])
-                rotate([0, 90, 0])
-                    cylinder(d = collar_d, h = 0.1, center = true, $fn = 60);
-        }
+        // Rear shoulder – 18mm hump where body meets collar, gives a distinct raised shoulder
+        translate([rx, 0, 0])
+            sphere(d = blend_d, $fn = 60);
     }
 
     // --- Center bore (nose to tail) ---
