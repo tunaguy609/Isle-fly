@@ -32,10 +32,10 @@ collar_d      = 15;             // mm
 collar_len    = 6;              // mm
 collar_x      = rx - collar_len / 2;  // centred at back of egg
 
-// --- Jets (new) ---
-jet_d         = 2.4;            // mm jet tunnel diameter
-jet_start_x   = chin_x + 1.0;   // start near mouth
-jet_start_z   = chin_z + 0.8;   // lift slightly into body
+// --- Jets ---
+jet_d         = 3.2;            // mm jet tunnel diameter – wider bore for stronger water throw
+jet_start_x   = chin_x;         // entry flush with chin slot front face
+jet_start_z   = chin_z + 0.2;   // entry low in chin so tunnel angle rises steeply = aggressive throw
 jet_exit_x    = eye_x_offset + 4.5;   // exit behind eyes (+X is toward tail)
 jet_exit_y    = eye_y_offset - 0.8;   // just inboard of eye pocket rim
 jet_exit_z    = 0.2;            // near eye center height
@@ -80,7 +80,7 @@ difference() {
     // --- Twin jet tunnels from mouth to behind-eye exits ---
     // starboard jet
     hull() {
-        translate([jet_start_x,  1.8, jet_start_z])
+        translate([jet_start_x,  2.2, jet_start_z])
             rotate([0, 90, 0]) cylinder(d = jet_d, h = 0.8, center = true, $fn = 36);
         translate([jet_exit_x,   jet_exit_y, jet_exit_z])
             rotate([0, 90, 0]) cylinder(d = jet_d, h = 0.8, center = true, $fn = 36);
@@ -88,7 +88,7 @@ difference() {
 
     // port jet
     hull() {
-        translate([jet_start_x, -1.8, jet_start_z])
+        translate([jet_start_x, -2.2, jet_start_z])
             rotate([0, 90, 0]) cylinder(d = jet_d, h = 0.8, center = true, $fn = 36);
         translate([jet_exit_x,  -jet_exit_y, jet_exit_z])
             rotate([0, 90, 0]) cylinder(d = jet_d, h = 0.8, center = true, $fn = 36);
