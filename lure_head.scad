@@ -37,6 +37,17 @@ chin_h        = 4.5;            // mm, height of oval mouth (flatter = more aggr
 chin_x        = -rx + 3.5;      // mm, position along X from centre (further forward)
 chin_z        = -(ry * 0.50);   // mm, position on underside (flush with belly surface)
 
+// --- Jets ---
+jet_d         = 2.4;            // mm, jet tunnel diameter
+// Entry: inside the chin slot opening
+jet_entry_x   = chin_x + 3.0;  // mm, pulled back slightly from chin face
+jet_entry_z   = chin_z + 4.5;  // mm, raised into the body from the chin base
+jet_entry_y   = 1.8;            // mm, offset either side of centreline
+// Exit: crown of head, behind the eyes
+jet_exit_x    = eye_x_offset + 5.0;  // mm, behind eyes toward tail
+jet_exit_z    = ry - 2.0;            // mm, inside crown surface to avoid breakthrough (+Z = top)
+jet_exit_y    = 1.2;                 // mm, close to centreline at crown
+
 // --- Skirt collar (rear cylinder) ---
 collar_d        = 15;             // mm, outer diameter
 collar_bore_d   = 14;             // mm, inner (bore) diameter – hollow to accept skirt sleeve
@@ -117,6 +128,22 @@ difference() {
         rotate([0, 30, 0])                 // steeper face = more action/smoke
             scale([chin_w/chin_h, 1, 1])   // horizontal oval
                 cylinder(d = chin_h, h = ry * 1.0, $fn = 72);
+
+    // --- Twin jet tunnels: rise from chin slot base to crown exits behind eyes ---
+    // Starboard jet
+    hull() {
+        translate([jet_entry_x,  jet_entry_y, jet_entry_z])
+            sphere(d = jet_d, $fn = 36);
+        translate([jet_exit_x,   jet_exit_y,  jet_exit_z])
+            sphere(d = jet_d, $fn = 36);
+    }
+    // Port jet
+    hull() {
+        translate([jet_entry_x, -jet_entry_y, jet_entry_z])
+            sphere(d = jet_d, $fn = 36);
+        translate([jet_exit_x,  -jet_exit_y,  jet_exit_z])
+            sphere(d = jet_d, $fn = 36);
+    }
 
 
 }
