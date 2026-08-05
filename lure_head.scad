@@ -19,7 +19,7 @@ bore_d        = 2.0;            // mm, center hole for leader/cable
 eye_d         = 12;             // mm, eye recess diameter
 eye_depth     = 1.8;            // mm, recess depth
 eye_x_offset  = 2;              // mm, forward of centre
-eye_y_offset  = ry - 0.5;       // places on the side of the head
+eye_y_offset  = ry + 1.0;       // start outside the head surface so the cut enters cleanly – no flap
 
 // --- Chin slot ---
 chin_w        = 14;             // mm, width of horizontal oval mouth (aggressive)
@@ -28,9 +28,10 @@ chin_x        = -rx + 3.5;      // mm, position along X from centre (further for
 chin_z        = -(ry * 0.78);   // mm, position on underside (lower)
 
 // --- Skirt collar (rear cylinder) ---
-collar_d      = 15;             // mm
-collar_len    = 6;              // mm
-collar_x      = rx - collar_len / 2;  // centred at back of egg
+collar_d      = 15;             // mm, outer diameter
+collar_bore_d = 14;             // mm, inner bore diameter – hollow to accept skirt sleeve
+collar_len    = 32;             // mm, full collar length restored
+collar_x      = rx + collar_len / 2 - 4;  // tucks 4mm into head for smooth blend
 
 // --- Jets ---
 jet_d         = 3.2;            // mm jet tunnel diameter – wider bore for stronger water throw
@@ -62,6 +63,11 @@ difference() {
     translate([-rx, 0, 0])
         rotate([0, 90, 0])
             cylinder(d = bore_d, h = head_length + collar_len, $fn = 30);
+
+    // --- Skirt collar bore (hollow interior for skirt sleeve) ---
+    translate([rx, 0, 0])
+        rotate([0, 90, 0])
+            cylinder(d = collar_bore_d, h = collar_len, $fn = 60);
 
     // --- Eye socket – starboard (right, +Y side) ---
     translate([eye_x_offset, eye_y_offset, 0])
