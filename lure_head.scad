@@ -57,15 +57,6 @@ collar_blend_d  = 18.0;          // mm, wider blend diameter to merge collar int
 lip_w           = 2.0;           // mm, axial width of flange ring
 lip_od          = 18.0;          // mm, outer diameter of flange (wider than collar)
 
-// --- Jets ---
-jet_d           = 2.4;           // mm jet tunnel diameter
-// Start jets well inside the chin slot so no separate hole appears on the belly
-jet_start_x     = chin_x + 3.5;  // pulled forward to sit inside the chin opening
-jet_start_z     = chin_z + 4.5;  // raised further into body to stay within chin slot
-// Exits at the crown (top of head), behind the eyes and well clear of eye sockets
-jet_exit_x      = eye_x_offset + 4.5;  // behind eyes toward tail
-jet_exit_y      = 1.2;                 // close to centreline at crown
-jet_exit_z      = ry - 1.0;            // near the crown surface (+Z = top)
 
 // ============================================================
 //  Assembly  –  rotated so skirt collar is flat on the build plate
@@ -149,22 +140,5 @@ difference() {
             scale([chin_w/chin_h, 1, 1])   // horizontal oval
                 cylinder(d = chin_h, h = ry * 1.2, $fn = 72);
 
-    // --- Twin jet tunnels from chin mouth to crown exits ---
-    // Jets rise from under the chin and exit through the top of the head,
-    // behind the eye sockets and well clear of them.
-    // starboard jet
-    hull() {
-        translate([jet_start_x,  1.8, jet_start_z])
-            sphere(d = jet_d, $fn = 36);
-        translate([jet_exit_x,   jet_exit_y, jet_exit_z])
-            sphere(d = jet_d, $fn = 36);
-    }
 
-    // port jet
-    hull() {
-        translate([jet_start_x, -1.8, jet_start_z])
-            sphere(d = jet_d, $fn = 36);
-        translate([jet_exit_x,  -jet_exit_y, jet_exit_z])
-            sphere(d = jet_d, $fn = 36);
-    }
 }
