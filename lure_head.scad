@@ -100,7 +100,7 @@ difference() {
         translate([-rx, 0, bore_z_offset])
             rotate([0, 90, 0])
                 cylinder(d = bore_d, h = 0.1, $fn = 30);
-        translate([rx + collar_len / 2, 0, 0])
+        translate([rx + collar_len - 4, 0, 0])
             rotate([0, 90, 0])
                 cylinder(d = bore_d, h = 0.1, $fn = 30);
     }
