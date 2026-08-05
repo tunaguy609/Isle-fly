@@ -36,15 +36,13 @@ collar_x      = rx + collar_len / 2 - 4;  // tucks 4mm into head for smooth blen
 // --- Head-to-collar blend ---
 blend_d       = 18.0;          // mm, rear shoulder sphere diameter – proud hump where body meets collar
 
-// --- Double-skirt collar features ---
-// Shoulder rear edge sits at x = rx + blend_d/2 = 30mm; collar tail at x = 49mm (19mm exposed)
-groove_w      = 1.5;           // mm, groove width
-groove_depth  = 0.8;           // mm, groove depth (skirt tie channel)
-groove_1_x    = rx + blend_d/2 + 5.0;   // front groove – inner skirt tie, 5mm behind shoulder
-groove_2_x    = rx + collar_len - 4 - 5.0; // rear groove – outer skirt tie, 5mm from tail end
-flange_od     = 17.5;          // mm, tail flange outer diameter – stops skirts sliding off
-flange_w      = 2.0;           // mm, tail flange axial width
-flange_x      = rx + collar_len - 4 - flange_w / 2;  // flush with tail end of collar
+// --- Skirt flair (exposed collar) ---
+// Exposed collar runs from shoulder rear edge (~x=30) to collar tail (~x=49), ~19mm
+// A cone ramps up from collar_d to flair_od over the first half, then holds flair_od to the tail
+flair_od      = 20.0;          // mm, flared outer diameter at the wide end
+flair_start_x = rx + blend_d/2 + 0.5;          // just behind the shoulder hump
+flair_mid_x   = flair_start_x + 9.5;           // halfway point – where ramp peaks
+flair_end_x   = rx + collar_len - 4;            // tail end of collar
 
 // --- Jets ---
 jet_d         = 3.2;            // mm jet tunnel diameter – wider bore for stronger water throw
@@ -75,10 +73,21 @@ difference() {
         translate([rx, 0, 0])
             sphere(d = blend_d, $fn = 60);
 
-        // Tail retaining flange – stops skirts sliding off the end
-        translate([flange_x, 0, 0])
+        // Skirt flair – cone ramps from collar_d up to flair_od at the midpoint,
+        // then a cylinder holds that diameter to the tail end
+        // Ramp section: collar_d at flair_start_x → flair_od at flair_mid_x
+        hull() {
+            translate([flair_start_x, 0, 0])
+                rotate([0, 90, 0])
+                    cylinder(d = collar_d, h = 0.1, center = true, $fn = 60);
+            translate([flair_mid_x, 0, 0])
+                rotate([0, 90, 0])
+                    cylinder(d = flair_od, h = 0.1, center = true, $fn = 60);
+        }
+        // Flat section: flair_od cylinder from midpoint to tail
+        translate([(flair_mid_x + flair_end_x) / 2, 0, 0])
             rotate([0, 90, 0])
-                cylinder(d = flange_od, h = flange_w, center = true, $fn = 60);
+                cylinder(d = flair_od, h = flair_end_x - flair_mid_x, center = true, $fn = 60);
     }
 
     // --- Center bore (nose to tail) ---
@@ -90,16 +99,6 @@ difference() {
     translate([rx, 0, 0])
         rotate([0, 90, 0])
             cylinder(d = collar_bore_d, h = collar_len, $fn = 60);
-
-    // --- Double-skirt grooves – circumferential tie channels ---
-    // Front groove (inner skirt)
-    translate([groove_1_x, 0, 0])
-        rotate([0, 90, 0])
-            cylinder(d = collar_d + groove_depth * 2, h = groove_w, center = true, $fn = 60);
-    // Rear groove (outer skirt)
-    translate([groove_2_x, 0, 0])
-        rotate([0, 90, 0])
-            cylinder(d = collar_d + groove_depth * 2, h = groove_w, center = true, $fn = 60);
 
     // --- Eye socket – starboard (right, +Y side) ---
     translate([eye_x_offset, eye_y_offset, 0])
