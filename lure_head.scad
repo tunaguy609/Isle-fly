@@ -1,7 +1,7 @@
 // ============================================================
 //  Blue Eye Konahead Trolling Lure Head
 //  42mm long x 23mm max diameter
-//  3D print orientation: nose facing down / flat face up
+//  3D print orientation: skirt collar flat end down / nose pointing up
 //
 //  Swim action features:
 //    - Concave cupped nose face: deflects water to create zig-zag wobble
@@ -52,6 +52,11 @@ collar_x        = rx + collar_len / 2 - 4;  // tucks 4mm into head for smoother 
 collar_blend_x  = rx - 3.0;      // mm, blend starts slightly inside the head
 collar_blend_d  = 18.0;          // mm, wider blend diameter to merge collar into head
 
+// --- Skirt retaining lip (at tail end of collar) ---
+// A wider flange ring at the tail end – skirt slides over collar and butts against lip
+lip_w           = 2.0;           // mm, axial width of flange ring
+lip_od          = 18.0;          // mm, outer diameter of flange (wider than collar)
+
 // --- Jets ---
 jet_d           = 2.4;           // mm jet tunnel diameter
 // Start jets well inside the chin slot so no separate hole appears on the belly
@@ -63,8 +68,9 @@ jet_exit_y      = 1.2;                 // close to centreline at crown
 jet_exit_z      = ry - 1.0;            // near the crown surface (+Z = top)
 
 // ============================================================
-//  Assembly
+//  Assembly  –  rotated so skirt collar is flat on the build plate
 // ============================================================
+rotate([0, -90, 0])
 difference() {
     union() {
         // Main egg-shaped head (scaled sphere)
@@ -84,6 +90,11 @@ difference() {
                 rotate([0, 90, 0])
                     cylinder(d = collar_d, h = 0.1, center = true, $fn = 60);
         }
+        // Skirt retaining lip – wider flange ring at the tail end of the collar
+        // Skirt slides over the collar body and butts up against this flange
+        translate([rx + collar_len - 4, 0, 0])
+            rotate([0, 90, 0])
+                cylinder(d = lip_od, h = lip_w, $fn = 60);
     }
 
     // --- Leader bore: angled from nose entry to collar centreline exit ---
