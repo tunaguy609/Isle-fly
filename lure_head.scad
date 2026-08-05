@@ -28,21 +28,19 @@ chin_x        = -rx + 3.5;      // mm, position along X from centre (further for
 chin_z        = -(ry * 0.78);   // mm, position on underside (lower)
 
 // --- Skirt collar (rear cylinder) ---
-collar_d      = 15;             // mm, outer diameter
+collar_d      = 15;             // mm, outer diameter at the shoulder end
 collar_bore_d = 14;             // mm, inner bore diameter – hollow to accept skirt sleeve
-collar_len    = 32;             // mm, full collar length restored
-collar_x      = rx + collar_len / 2 - 4;  // tucks 4mm into head for smooth blend
+collar_len    = 32;             // mm, full collar length
 
 // --- Head-to-collar blend ---
 blend_d       = 18.0;          // mm, rear shoulder sphere diameter – proud hump where body meets collar
 
 // --- Skirt flair (exposed collar) ---
-// Exposed collar runs from shoulder rear edge (~x=30) to collar tail (~x=49), ~19mm
-// A cone ramps up from collar_d to flair_od over the first half, then holds flair_od to the tail
-flair_od      = 20.0;          // mm, flared outer diameter at the wide end
-flair_start_x = rx + blend_d/2 + 0.5;          // just behind the shoulder hump
-flair_mid_x   = flair_start_x + 9.5;           // halfway point – where ramp peaks
-flair_end_x   = rx + collar_len - 4;            // tail end of collar
+// Single tapered cone ramps from collar_d at the shoulder to flair_od at the tail
+flair_od      = 20.0;          // mm, flared outer diameter at the tail end
+flair_start_x = rx + blend_d/2 + 0.5;   // just behind the shoulder hump
+flair_end_x   = rx + collar_len - 4;    // tail end of collar
+flair_len     = flair_end_x - flair_start_x;  // length of the ramp
 
 // --- Jets ---
 jet_d         = 3.2;            // mm jet tunnel diameter – wider bore for stronger water throw
@@ -64,30 +62,16 @@ difference() {
         scale([rx, ry, ry])
             sphere(r = 1, $fn = 80);
 
-        // Skirt collar at rear
-        translate([collar_x, 0, 0])
-            rotate([0, 90, 0])
-                cylinder(d = collar_d, h = collar_len, center = true, $fn = 60);
-
         // Rear shoulder – 18mm hump where body meets collar, gives a distinct raised shoulder
         translate([rx, 0, 0])
             sphere(d = blend_d, $fn = 60);
 
-        // Skirt flair – cone ramps from collar_d up to flair_od at the midpoint,
-        // then a cylinder holds that diameter to the tail end
-        // Ramp section: collar_d at flair_start_x → flair_od at flair_mid_x
-        hull() {
-            translate([flair_start_x, 0, 0])
-                rotate([0, 90, 0])
-                    cylinder(d = collar_d, h = 0.1, center = true, $fn = 60);
-            translate([flair_mid_x, 0, 0])
-                rotate([0, 90, 0])
-                    cylinder(d = flair_od, h = 0.1, center = true, $fn = 60);
-        }
-        // Flat section: flair_od cylinder from midpoint to tail
-        translate([(flair_mid_x + flair_end_x) / 2, 0, 0])
+        // Skirt collar + flair: single tapered cone from shoulder to tail
+        // d1 = collar_d at the shoulder end (tucked under the head),
+        // d2 = flair_od at the tail – one continuous ramp, no separate pieces
+        translate([flair_start_x, 0, 0])
             rotate([0, 90, 0])
-                cylinder(d = flair_od, h = flair_end_x - flair_mid_x, center = true, $fn = 60);
+                cylinder(d1 = collar_d, d2 = flair_od, h = flair_len, $fn = 60);
     }
 
     // --- Center bore (nose to tail) ---
