@@ -40,7 +40,7 @@ chin_z        = -(ry * 0.50);   // mm, position on underside (flush with belly s
 // --- Jets ---
 jet_d         = 2.4;            // mm, jet tunnel diameter
 // Entry: below the belly so the tunnel punches fully through from underside
-jet_entry_x   = chin_x + 1.0;  // mm, near the front of the chin slot
+jet_entry_x   = chin_x + 9.0;  // mm, shifted back from chin toward mid-body
 jet_entry_z   = chin_z - 4.0;  // mm, below belly surface – guarantees full through-cut
 jet_entry_y   = 1.8;            // mm, offset either side of centreline
 // Exit: above the crown so the tunnel punches fully through from the top
