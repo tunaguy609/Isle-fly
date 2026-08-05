@@ -36,6 +36,16 @@ collar_x      = rx + collar_len / 2 - 4;  // tucks 4mm into head for smooth blen
 // --- Head-to-collar blend ---
 blend_d       = 18.0;          // mm, rear shoulder sphere diameter – proud hump where body meets collar
 
+// --- Double-skirt collar features ---
+// Shoulder rear edge sits at x = rx + blend_d/2 = 30mm; collar tail at x = 49mm (19mm exposed)
+groove_w      = 1.5;           // mm, groove width
+groove_depth  = 0.8;           // mm, groove depth (skirt tie channel)
+groove_1_x    = rx + blend_d/2 + 5.0;   // front groove – inner skirt tie, 5mm behind shoulder
+groove_2_x    = rx + collar_len - 4 - 5.0; // rear groove – outer skirt tie, 5mm from tail end
+flange_od     = 17.5;          // mm, tail flange outer diameter – stops skirts sliding off
+flange_w      = 2.0;           // mm, tail flange axial width
+flange_x      = rx + collar_len - 4 - flange_w / 2;  // flush with tail end of collar
+
 // --- Jets ---
 jet_d         = 3.2;            // mm jet tunnel diameter – wider bore for stronger water throw
 // Entries sit on the flanks of the belly, clearly outside the chin slot (chin_w/2 = 7mm edge)
@@ -64,6 +74,11 @@ difference() {
         // Rear shoulder – 18mm hump where body meets collar, gives a distinct raised shoulder
         translate([rx, 0, 0])
             sphere(d = blend_d, $fn = 60);
+
+        // Tail retaining flange – stops skirts sliding off the end
+        translate([flange_x, 0, 0])
+            rotate([0, 90, 0])
+                cylinder(d = flange_od, h = flange_w, center = true, $fn = 60);
     }
 
     // --- Center bore (nose to tail) ---
@@ -75,6 +90,16 @@ difference() {
     translate([rx, 0, 0])
         rotate([0, 90, 0])
             cylinder(d = collar_bore_d, h = collar_len, $fn = 60);
+
+    // --- Double-skirt grooves – circumferential tie channels ---
+    // Front groove (inner skirt)
+    translate([groove_1_x, 0, 0])
+        rotate([0, 90, 0])
+            cylinder(d = collar_d + groove_depth * 2, h = groove_w, center = true, $fn = 60);
+    // Rear groove (outer skirt)
+    translate([groove_2_x, 0, 0])
+        rotate([0, 90, 0])
+            cylinder(d = collar_d + groove_depth * 2, h = groove_w, center = true, $fn = 60);
 
     // --- Eye socket – starboard (right, +Y side) ---
     translate([eye_x_offset, eye_y_offset, 0])
