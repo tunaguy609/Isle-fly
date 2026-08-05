@@ -38,7 +38,7 @@ blend_d       = 18.0;          // mm, rear shoulder sphere diameter – proud hu
 // --- Skirt flair (exposed collar) ---
 // Single tapered cone ramps from collar_d at the shoulder to flair_od at the tail
 flair_od      = 20.0;          // mm, flared outer diameter at the tail end
-flair_start_x = rx + blend_d/2 + 0.5;   // just behind the shoulder hump
+flair_start_x = rx;                      // starts at shoulder centre – overlaps blend sphere, no gap
 flair_end_x   = rx + collar_len - 4;    // tail end of collar
 flair_len     = flair_end_x - flair_start_x;  // length of the ramp
 
