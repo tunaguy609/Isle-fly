@@ -40,7 +40,7 @@ collar_len    = 36;             // mm, extended to accommodate double flair
 collar_x      = rx + collar_len / 2 - 4;  // tucks 4mm into head for smooth blend
 
 // --- Skirt flair shared dimensions ---
-flair_od      = 18.0;          // mm, flared outer diameter at the wide end
+flair_od      = 20.0;          // mm, flared outer diameter at the wide end
 flair_ramp    = 9.5;           // mm, length of the narrow→wide ramp
 flair_flat    = 5.0;           // mm, length of the wide flat section at the tail of each flair
 
