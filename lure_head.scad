@@ -19,7 +19,7 @@ face_depth    = 3.0;            // mm, depth of the dish
 
 // --- Bore (line-through hole) ---
 bore_d        = 2.0;            // mm, center hole for leader/cable
-bore_z_offset = 1.5;            // mm, upward offset of bore exit at nose (tows nose-down for action)
+// Bore runs straight along the X axis (no Z offset) so the leader sleeve is one clean tube nose-to-collar.
 
 // --- Eye sockets ---
 eye_d         = 10;             // mm, eye recess diameter
@@ -32,6 +32,8 @@ chin_w        = 28;             // mm, width of horizontal oval mouth – widene
 chin_h        = 4.5;            // mm, height of oval mouth (flatter = more aggressive)
 chin_x        = -rx + 1.5;      // mm, position along X – moved to nose for cedar-plug dart
 chin_z        = -(ry * 0.78);   // mm, position on underside (lower)
+// Slot is rotated 55° around Y: sweeps up and forward from the belly and terminates just below
+// the straight bore centreline (Z=0), so the bore tunnel remains fully clear and uninterrupted.
 
 // --- Skirt collar (rear cylinder) ---
 collar_d      = 18;             // mm, outer diameter
@@ -141,25 +143,10 @@ difference() {
                 cylinder(d = flair_od, h = flair_end_x - flair_mid_x, center = true, $fn = 60);
     }
 
-    // --- Center bore (nose to tail) – offset upward at nose so lure tows nose-down ---
-    // Nose endpoint pushed forward past the dish depth so the hole breaks cleanly
-    // through the face cutout and is not blocked by the dish floor.
-    hull() {
-        translate([-rx - face_depth - 0.1, 0, bore_z_offset])
-            rotate([0, 90, 0])
-                cylinder(d = bore_d, h = 0.1, $fn = 30);
-        translate([rx + collar_len - 4, 0, 0])
-            rotate([0, 90, 0])
-                cylinder(d = bore_d, h = 0.1, $fn = 30);
-    }
-
-    // --- Nose bore stub – straight axial segment bridging the dish floor to the angled bore ---
-    // The angled bore is offset upward (bore_z_offset) so its entry clips the dish off-centre;
-    // this short straight cylinder (Z=0, centred in the dish) closes the gap and ensures the
-    // leader sleeve has a clean, uninterrupted tunnel from the nose face into the head.
+    // --- Center bore (nose to tail) – straight axial tube, leader sleeve runs clean nose-to-collar ---
     translate([-rx - face_depth - 0.1, 0, 0])
         rotate([0, 90, 0])
-            cylinder(d = bore_d, h = face_depth + bore_z_offset + 2, $fn = 30);
+            cylinder(d = bore_d, h = rx + face_depth + collar_len - 4 + 0.2, $fn = 30);
 
     // --- Nose face – flat dish cutout for cedar-plug water-catch action ---
     translate([-rx - 0.1, 0, 0])
@@ -184,9 +171,10 @@ difference() {
         rotate([-90, 0, 0])
             cylinder(d = eye_d, h = eye_depth + 0.5, $fn = 80);
 
-    // --- Chin slot (steepened to 45° for cedar-plug dart/yaw action) ---
+    // --- Chin slot – angles up and out from belly, terminates just below bore centreline (Z=0) ---
+    // 55° rotation: from chin_z ≈ -10mm the slot sweeps up ~9mm, ending ≈ -1mm below the bore.
     translate([chin_x, 0, chin_z])
-        rotate([0, 45, 0])                 // steeper face = more action/smoke
+        rotate([0, 55, 0])                 // steeper than 45° → sweeps more upward toward bore
             scale([chin_w/chin_h, 1, 1])   // horizontal oval
                 cylinder(d = chin_h, h = ry * 1.2, $fn = 72);
 
