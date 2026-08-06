@@ -34,6 +34,7 @@ chin_w        = 28;             // mm, width of horizontal oval mouth – widene
 chin_h        = 4.5;            // mm, height of oval mouth (flatter = more aggressive)
 chin_x        = -rx + 1.5;      // mm, position along X – moved to nose for cedar-plug dart
 chin_z        = -(ry * 0.78);   // mm, position on underside (lower)
+chin_fillet_r = 2.0;            // mm, fillet radius blending the hard upper clip edge of the slot
 // Slot is rotated 55° around Y: sweeps up and forward from the belly and terminates just below
 // the straight bore centreline (Z=0), so the bore tunnel remains fully clear and uninterrupted.
 
@@ -169,17 +170,24 @@ difference() {
         rotate([-90, 0, 0])
             cylinder(d = eye_d, h = eye_depth + 0.5, $fn = 80);
 
-    // --- Chin slot – clipped below and around the leader sleeve ---
-    // Half-space drops bore_d/2 + 1.5mm below the bore centreline so the slot
-    // leaves a band of solid material below and slightly around the bore tube.
+    // --- Chin slot – radial sweep at upper clip edge (fillet blends the hard intersection) ---
+    // The clip volume is a cube rounded by chin_fillet_r via minkowski+sphere, positioned so
+    // its top face still sits at z = -(bore_d/2 + 1.5).  The rounded top edge creates a smooth
+    // radial sweep where the slot terminates, instead of a sharp hard corner.
     intersection() {
         translate([chin_x, 0, chin_z])
             rotate([0, 55, 0])
                 scale([chin_w/chin_h, 1, 1])
                     cylinder(d = chin_h, h = ry * 1.2, $fn = 72);
-        // z ≤ -(bore_d/2 + 1.5) – fills in below and a little around the bore
+        // Minkowski-rounded clip cube – top face at z = -(bore_d/2 + 1.5)
+        // Cube is shrunk by chin_fillet_r so after minkowski expansion the face positions are preserved.
         translate([0, 0, -(ry + rx) / 2 - bore_d / 2 - 1.5])
-            cube([rx * 4 + collar_len, ry * 4, ry + rx], center = true);
+            minkowski() {
+                cube([rx * 4 + collar_len - 2 * chin_fillet_r,
+                      ry * 4             - 2 * chin_fillet_r,
+                      ry + rx            - 2 * chin_fillet_r], center = true);
+                sphere(r = chin_fillet_r, $fn = 24);
+            }
     }
 
     // --- Twin jet tunnels: entries on belly flanks outside chin slot, exits through crown ---
