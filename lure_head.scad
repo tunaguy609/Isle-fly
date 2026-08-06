@@ -12,6 +12,7 @@ max_diameter  = 26;   // mm, widest point
 rx      = head_length / 2;     // X half-axis (fore-aft) – used for nose/front half
 rear_rx = rx * 1.5;            // X half-axis for rear half – larger value = shallower rear taper
 ry      = max_diameter / 2;    // Y/Z half-axis (radial)
+top_bullet_blend = 0.20;       // 0..1 subtle crown-only bullet blend; affects top half (z>=0) only
 
 // --- Nose face (flat/cupped dish – cedar plug water-catch) ---
 face_d        = 16.0;           // mm, diameter of flat face cutout
@@ -90,15 +91,15 @@ difference() {
                 cube([rear_rx * 2 + 2, ry * 2 + 2, ry * 2 + 2], center = true);
         }
 
-        // Nose top ramp – linear profile from tip to max diameter on the upper side.
-        // A cone (hull of nose tip → max-diameter circle) is clipped to z≥0 so only
-        // the crown is affected; the lower body and sides remain the egg shape.
+        // Nose top ramp – crown-only bullet blend from tip to max diameter on upper side.
+        // This affects z>=0 only; underside/sides remain as existing body geometry.
         intersection() {
             hull() {
                 translate([-rx, 0, 0])
                     sphere(r = 0.5, $fn = 30);
-                rotate([0, 90, 0])
-                    cylinder(r = ry, h = 0.1, center = true, $fn = 80);
+                translate([-rx * top_bullet_blend, 0, ry * (0.06 * top_bullet_blend)])
+                    rotate([0, 90, 0])
+                        cylinder(r = ry * (1 - 0.08 * top_bullet_blend), h = 0.1, center = true, $fn = 80);
             }
             // Upper half-space: z ≥ 0
             translate([0, 0, (ry + rx) / 2])
