@@ -31,7 +31,7 @@ eye_y_offset  = ry + 1.0;       // start outside the head surface so the cut ent
 
 // --- Chin slot ---
 chin_w        = 28;             // mm, width of horizontal oval mouth – widened for more action
-chin_h        = 4.5;            // mm, height of oval mouth (flatter = more aggressive)
+chin_h        = 3.0;            // mm, height of oval mouth (flatter = more aggressive)
 chin_x        = -rx + 1.5;      // mm, position along X – moved to nose for cedar-plug dart
 chin_z        = -(ry * 0.78);   // mm, position on underside (lower)
 chin_fillet_r = 2.0;            // mm, fillet radius blending the hard upper clip edge of the slot
