@@ -9,9 +9,10 @@ head_length   = 40;   // mm, nose to skirt collar – shorter/stubbier for cedar
 max_diameter  = 26;   // mm, widest point
 
 // --- Derived ---
-rx      = head_length / 2;     // X half-axis (fore-aft) – used for nose/front half
-rear_rx = rx * 1.5;            // X half-axis for rear half – larger value = shallower rear taper
-ry      = max_diameter / 2;    // Y/Z half-axis (radial)
+rx       = head_length / 2;     // X half-axis (fore-aft) – base reference
+front_rx = rx * 0.88;           // Front X half-axis (nose side) – slightly smaller for less rounded taper
+rear_rx  = rx * 1.5;            // Rear X half-axis – larger value = shallower rear taper
+ry       = max_diameter / 2;    // Y/Z half-axis (radial)
 
 // --- Nose face (flat/cupped dish – cedar plug water-catch) ---
 face_d        = 16.0;           // mm, diameter of flat face cutout
@@ -81,13 +82,13 @@ rotate([0, 90, 0])
 difference() {
     union() {
         // Main egg-shaped head – asymmetric ellipsoid:
-        //   front half uses rx (steeper nose taper), rear half uses rear_rx (shallower rear taper)
+        //   front half uses front_rx (slightly quicker nose taper), rear half uses rear_rx (shallower rear taper)
         // Front half (nose side, x ≤ 0)
         intersection() {
-            scale([rx, ry, ry])
+            scale([front_rx, ry, ry])
                 sphere(r = 1, $fn = 80);
-            translate([-rx - 1, 0, 0])
-                cube([rx * 2 + 2, ry * 2 + 2, ry * 2 + 2], center = true);
+            translate([-front_rx - 1, 0, 0])
+                cube([front_rx * 2 + 2, ry * 2 + 2, ry * 2 + 2], center = true);
         }
         // Rear half (tail side, x ≥ 0) – stretched X axis for shallower taper
         intersection() {
