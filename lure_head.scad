@@ -174,11 +174,18 @@ difference() {
     // The clip volume is a cube rounded by chin_fillet_r via minkowski+sphere, positioned so
     // its top face still sits at z = -(bore_d/2 + 1.5).  The rounded top edge creates a smooth
     // radial sweep where the slot terminates, instead of a sharp hard corner.
+    // The inside termination is capped with a hemisphere (hull of cylinder + sphere at tip)
+    // so there is no flat stop face inside the head.
     intersection() {
         translate([chin_x, 0, chin_z])
             rotate([0, 55, 0])
                 scale([chin_w/chin_h, 1, 1])
-                    cylinder(d = chin_h, h = ry * 1.2, $fn = 72);
+                    hull() {
+                        cylinder(d = chin_h, h = ry * 1.2, $fn = 72);
+                        // Sphere at inside tip rounds the termination end
+                        translate([0, 0, ry * 1.2])
+                            sphere(d = chin_h, $fn = 36);
+                    }
         // Minkowski-rounded clip cube – top face at z = -(bore_d/2 + 1.5)
         // Cube is shrunk by chin_fillet_r so after minkowski expansion the face positions are preserved.
         translate([0, 0, -(ry + rx) / 2 - bore_d / 2 - 1.5])
