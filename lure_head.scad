@@ -1,11 +1,11 @@
 // ============================================================
 //  Blue Eye Konahead Trolling Lure Head
-//  34mm long x 24mm max diameter – cedar-plug action profile
+//  40mm long x 24mm max diameter – cedar-plug action profile
 //  3D print orientation: collar on build plate / nose facing up
 // ============================================================
 
 // --- Main dimensions ---
-head_length   = 34;   // mm, nose to skirt collar – shorter/stubbier for cedar-plug action
+head_length   = 40;   // mm, nose to skirt collar – shorter/stubbier for cedar-plug action
 max_diameter  = 26;   // mm, widest point
 
 // --- Derived ---
