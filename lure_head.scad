@@ -55,9 +55,9 @@ flair_end_x   = flair_mid_x + flair_flat;      // tail end of rear flair
 // --- Jets ---
 jet_d         = 3.2;            // mm jet tunnel diameter – wider bore for stronger water throw
 // Entries sit on the flanks of the belly, clearly outside the chin slot (chin_w/2 = 7mm edge)
-jet_start_x   = 0;              // slightly behind center so entries stay beside the chin area
-jet_start_y   = 0;              // outside the chin slot edge – clear separation
-jet_start_z   = 0;              // on the belly surface beside the chin slot
+jet_start_x   = 0;              // centered in X to keep the entry on the body
+jet_start_y   = 9.0;            // outside the body centerline, on the flank
+jet_start_z   = -8.0;           // lower belly entry
 // Exits break through the crown (top) of the head, well clear of the eye sockets on the sides
 jet_exit_x    = eye_x_offset + 6.0;   // behind the eyes toward the tail
 jet_exit_y    = 1.5;                  // close to centreline at the crown – nowhere near eye pockets
