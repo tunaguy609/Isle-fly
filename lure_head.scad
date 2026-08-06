@@ -35,6 +35,7 @@ chin_h        = 4.5;            // mm, height of oval mouth (flatter = more aggr
 chin_x        = -rx + 1.5;      // mm, position along X – moved to nose for cedar-plug dart
 chin_z        = -(ry * 0.78);   // mm, position on underside (lower)
 chin_fillet_r = 2.0;            // mm, fillet radius blending the hard upper clip edge of the slot
+chin_slot_r   = 1.5;            // mm, edge-rounding radius applied to the entire slot volume
 // Slot is rotated 55° around Y: sweeps up and forward from the belly and terminates just below
 // the straight bore centreline (Z=0), so the bore tunnel remains fully clear and uninterrupted.
 
@@ -170,24 +171,25 @@ difference() {
         rotate([-90, 0, 0])
             cylinder(d = eye_d, h = eye_depth + 0.5, $fn = 80);
 
-    // --- Chin slot – radial sweep at upper clip edge (fillet blends the hard intersection) ---
-    // The clip volume is a cube rounded by chin_fillet_r via minkowski+sphere, positioned so
-    // its top face still sits at z = -(bore_d/2 + 1.5).  The rounded top edge creates a smooth
-    // radial sweep where the slot terminates, instead of a sharp hard corner.
-    // The inside termination is capped with a hemisphere (hull of cylinder + sphere at tip)
-    // so there is no flat stop face inside the head.
+    // --- Chin slot – all edges rounded via minkowski; no straight intersections remain ---
+    // chin_slot_r is the edge-rounding radius applied to the whole slot volume.
+    // The cylinder/sphere inside are shrunk by chin_slot_r so after the minkowski expansion
+    // the mouth of the slot stays the same overall size.
+    // The inside termination is still a hemispherical cap (hull tip sphere).
+    // The upper clip boundary is still a minkowski-rounded half-space (chin_fillet_r).
     intersection() {
         translate([chin_x, 0, chin_z])
             rotate([0, 55, 0])
                 scale([chin_w/chin_h, 1, 1])
-                    hull() {
-                        cylinder(d = chin_h, h = ry * 1.2, $fn = 72);
-                        // Sphere at inside tip rounds the termination end
-                        translate([0, 0, ry * 1.2])
-                            sphere(d = chin_h, $fn = 36);
+                    minkowski() {
+                        hull() {
+                            cylinder(d = chin_h - 2 * chin_slot_r, h = ry * 1.2, $fn = 72);
+                            translate([0, 0, ry * 1.2])
+                                sphere(d = chin_h - 2 * chin_slot_r, $fn = 36);
+                        }
+                        sphere(r = chin_slot_r, $fn = 24);
                     }
         // Minkowski-rounded clip cube – top face at z = -(bore_d/2 + 1.5)
-        // Cube is shrunk by chin_fillet_r so after minkowski expansion the face positions are preserved.
         translate([0, 0, -(ry + rx) / 2 - bore_d / 2 - 1.5])
             minkowski() {
                 cube([rx * 4 + collar_len - 2 * chin_fillet_r,
