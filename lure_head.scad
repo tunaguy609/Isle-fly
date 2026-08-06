@@ -61,6 +61,15 @@ jet_exit_x    = eye_x_offset + 4.0; // moved further back
 jet_exit_y    = 2.5;
 jet_exit_z    = ry + 1.0;
 
+// --- Center jet (larger, between side jet entrances) ---
+center_jet_d       = 4.2;
+center_jet_start_x = jet_start_x;
+center_jet_start_y = 0;
+center_jet_start_z = jet_start_z;
+center_jet_exit_x  = eye_x_offset + 1.5; // exits farther back on body
+center_jet_exit_y  = 0;
+center_jet_exit_z  = ry + 0.6;
+
 // ============================================================
 //  Assembly
 // ============================================================
@@ -163,5 +172,13 @@ difference() {
             rotate([0, 90, 0]) cylinder(d = jet_d, h = 0.8, center = true, $fn = 36);
         translate([jet_exit_x,  -jet_exit_y, jet_exit_z])
             rotate([0, 90, 0]) cylinder(d = jet_d, h = 0.8, center = true, $fn = 36);
+    }
+
+    // --- Center jet tunnel (larger, middle, exits farther back) ---
+    hull() {
+        translate([center_jet_start_x, center_jet_start_y, center_jet_start_z])
+            rotate([0, 90, 0]) cylinder(d = center_jet_d, h = 0.8, center = true, $fn = 40);
+        translate([center_jet_exit_x, center_jet_exit_y, center_jet_exit_z])
+            rotate([0, 90, 0]) cylinder(d = center_jet_d, h = 0.8, center = true, $fn = 40);
     }
 }
