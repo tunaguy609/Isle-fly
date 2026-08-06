@@ -169,23 +169,17 @@ difference() {
         rotate([-90, 0, 0])
             cylinder(d = eye_d, h = eye_depth + 0.5, $fn = 80);
 
-    // --- Chin slot – sweeps under and back toward the nose below the leader hole ---
-    // The clipping volume is the z≤0 half-space minus the bore cylinder, so the slot
-    // follows the bore's curved outer surface upward and then sweeps back out toward
-    // the nose face below it – no flat ledge, no broken bore wall.
+    // --- Chin slot – clipped below and around the leader sleeve ---
+    // Half-space drops bore_d/2 + 1.5mm below the bore centreline so the slot
+    // leaves a band of solid material below and slightly around the bore tube.
     intersection() {
         translate([chin_x, 0, chin_z])
             rotate([0, 55, 0])
                 scale([chin_w/chin_h, 1, 1])
                     cylinder(d = chin_h, h = ry * 1.2, $fn = 72);
-        // z ≤ 0 half-space with the bore cylinder removed → slot wraps under bore toward nose
-        difference() {
-            translate([0, 0, -(ry + rx) / 2])
-                cube([rx * 4 + collar_len, ry * 4, ry + rx], center = true);
-            translate([-rx - 0.1, 0, 0])
-                rotate([0, 90, 0])
-                    cylinder(d = bore_d, h = rx + collar_len - 4 + 0.2, $fn = 60);
-        }
+        // z ≤ -(bore_d/2 + 1.5) – fills in below and a little around the bore
+        translate([0, 0, -(ry + rx) / 2 - bore_d / 2 - 1.5])
+            cube([rx * 4 + collar_len, ry * 4, ry + rx], center = true);
     }
 
     // --- Twin jet tunnels: entries on belly flanks outside chin slot, exits through crown ---
