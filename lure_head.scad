@@ -96,8 +96,10 @@ difference() {
     }
 
     // --- Center bore (nose to tail) – offset upward at nose so lure tows nose-down ---
+    // Nose endpoint pushed forward past the dish depth so the hole breaks cleanly
+    // through the face cutout and is not blocked by the dish floor.
     hull() {
-        translate([-rx, 0, bore_z_offset])
+        translate([-rx - face_depth - 0.1, 0, bore_z_offset])
             rotate([0, 90, 0])
                 cylinder(d = bore_d, h = 0.1, $fn = 30);
         translate([rx + collar_len - 4, 0, 0])
