@@ -70,9 +70,24 @@ translate([0, 0, rx + collar_len - 4])
 rotate([0, 90, 0])
 difference() {
     union() {
-        // Main egg-shaped head (scaled sphere)
+        // Main egg-shaped head (scaled sphere) – lower body / sides
         scale([rx, ry, ry])
             sphere(r = 1, $fn = 80);
+
+        // Nose top ramp – linear profile from tip to max diameter on the upper side.
+        // A cone (hull of nose tip → max-diameter circle) is clipped to z≥0 so only
+        // the crown is affected; the lower body and sides remain the egg shape.
+        intersection() {
+            hull() {
+                translate([-rx, 0, 0])
+                    sphere(r = 0.5, $fn = 30);
+                rotate([0, 90, 0])
+                    cylinder(r = ry, h = 0.1, center = true, $fn = 80);
+            }
+            // Upper half-space: z ≥ 0
+            translate([0, 0, (ry + rx) / 2])
+                cube([rx * 2 + 2, ry * 2 + 2, ry + rx], center = true);
+        }
 
         // Skirt collar at rear
         translate([collar_x, 0, 0])
