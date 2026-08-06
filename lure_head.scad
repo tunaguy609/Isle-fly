@@ -62,13 +62,13 @@ jet_exit_y    = 2.5;
 jet_exit_z    = ry + 1.0;
 
 // --- Center jet (larger, between side jet entrances) ---
-center_jet_d       = 4.2;
-center_jet_start_x = jet_start_x;
+center_jet_d       = 4.6;                 // slightly larger for cleaner visible tunnel
+center_jet_start_x = -7.0;                // move entrance further forward so it clearly opens at nose/face area
 center_jet_start_y = 0;
-center_jet_start_z = jet_start_z;
-center_jet_exit_x  = eye_x_offset + 1.5; // exits farther back on body
+center_jet_start_z = -8.8;                // a touch lower to guarantee material removal at entry
+center_jet_exit_x  = eye_x_offset + 8.5;  // exits way farther back on body
 center_jet_exit_y  = 0;
-center_jet_exit_z  = ry + 0.6;
+center_jet_exit_z  = ry + 2.2;            // definite break-through at outer surface
 
 // ============================================================
 //  Assembly
@@ -177,8 +177,16 @@ difference() {
     // --- Center jet tunnel (larger, middle, exits farther back) ---
     hull() {
         translate([center_jet_start_x, center_jet_start_y, center_jet_start_z])
-            rotate([0, 90, 0]) cylinder(d = center_jet_d, h = 0.8, center = true, $fn = 40);
+            rotate([0, 90, 0]) cylinder(d = center_jet_d, h = 1.2, center = true, $fn = 48);
         translate([center_jet_exit_x, center_jet_exit_y, center_jet_exit_z])
-            rotate([0, 90, 0]) cylinder(d = center_jet_d, h = 0.8, center = true, $fn = 40);
+            rotate([0, 90, 0]) cylinder(d = center_jet_d, h = 1.2, center = true, $fn = 48);
     }
+
+    // entrance overcut (forces visible opening)
+    translate([center_jet_start_x, center_jet_start_y, center_jet_start_z])
+        sphere(d = center_jet_d + 0.8, $fn = 48);
+
+    // exit overcut (forces visible opening)
+    translate([center_jet_exit_x, center_jet_exit_y, center_jet_exit_z])
+        sphere(d = center_jet_d + 0.8, $fn = 48);
 }
