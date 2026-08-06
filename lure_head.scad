@@ -21,8 +21,8 @@ bore_d        = 2.0;            // mm, center hole for leader/cable
 bore_z_offset = 1.5;            // mm, upward offset of bore exit at nose (tows nose-down for action)
 
 // --- Eye sockets ---
-eye_d         = 12;             // mm, eye recess diameter
-eye_depth     = 1.8;            // mm, recess depth
+eye_d         = 10;             // mm, eye recess diameter
+eye_depth     = 2.0;            // mm, recess depth
 eye_x_offset  = 2;              // mm, forward of centre
 eye_y_offset  = ry + 1.0;       // start outside the head surface so the cut enters cleanly – no flap
 
@@ -33,8 +33,8 @@ chin_x        = -rx + 1.5;      // mm, position along X – moved to nose for ce
 chin_z        = -(ry * 0.78);   // mm, position on underside (lower)
 
 // --- Skirt collar (rear cylinder) ---
-collar_d      = 15;             // mm, outer diameter
-collar_bore_d = 14;             // mm, inner bore diameter – hollow to accept skirt sleeve
+collar_d      = 18;             // mm, outer diameter
+collar_bore_d = 16;             // mm, inner bore diameter – hollow to accept skirt sleeve
 collar_len    = 24;             // mm, shorter collar – less stabilisation, more head swing
 collar_x      = rx + collar_len / 2 - 4;  // tucks 4mm into head for smooth blend
 
