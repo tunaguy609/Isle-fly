@@ -29,12 +29,6 @@ eye_depth     = 2.0;            // mm, recess depth
 eye_x_offset  = 2;              // mm, forward of centre
 eye_y_offset  = ry + 1.0;       // start outside the head surface so the cut enters cleanly – no flap
 
-// --- Skirt collar (rear cylinder) ---
-collar_d      = 18;             // mm, outer diameter
-collar_bore_d = 16;             // mm, inner bore diameter – hollow to accept skirt sleeve
-collar_len    = 36;             // mm, extended to accommodate double flair
-collar_x      = rx + collar_len / 2 - 4;  // tucks 4mm into head for smooth blend
-
 // --- Skirt flair shared dimensions ---
 flair_od      = 20.0;          // mm, flared outer diameter at the wide end
 flair_ramp    = 9.5;           // mm, length of the narrow→wide ramp
@@ -51,6 +45,18 @@ flair_gap     = 0;                              // mm, gap between the two flair
 flair_start_x = flair1_end_x + flair_gap;      // starts 6mm behind the front flair tail
 flair_mid_x   = flair_start_x + flair_ramp;    // halfway point – where ramp peaks
 flair_end_x   = flair_mid_x + flair_flat;      // tail end of rear flair
+
+// --- Skirt collar (rear cylinder) ---
+collar_d      = 18;             // mm, outer diameter
+collar_bore_d = 16;             // mm, inner bore diameter – hollow to accept skirt sleeve
+
+// Collar starts 4mm inside head, and ends exactly at rear flair tail
+collar_start_x = rx - 4;
+collar_end_x   = flair_end_x;
+
+// Derived
+collar_len    = collar_end_x - collar_start_x;
+collar_x      = (collar_start_x + collar_end_x) / 2;
 
 // --- Jets ---
 jet_d         = 3.2;            // mm jet tunnel diameter – wider bore for stronger water throw
@@ -138,11 +144,9 @@ difference() {
     }
 
     // --- Center bore (nose to tail) – straight axial tube, leader sleeve runs clean nose-to-collar ---
-    // Bore starts 0.1mm proud of the nose face (-rx) and must reach 0.1mm past the collar tail end
-    // (collar extends to rx + collar_len - 4), so total length = 2*rx + collar_len - 4 + 0.2.
     translate([-rx - 0.1, 0, 0])
         rotate([0, 90, 0])
-            cylinder(d = bore_d, h = 2 * rx + collar_len - 4 + 0.2, $fn = 30);
+            cylinder(d = bore_d, h = (collar_end_x - (-rx)) + 0.2, $fn = 30);
 
     // --- Skirt collar bore (hollow interior for skirt sleeve) ---
     // Extended 8mm deeper into the head (starts at rx-8 instead of rx);
