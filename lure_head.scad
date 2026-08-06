@@ -5,8 +5,8 @@
 // ============================================================
 
 // --- Main dimensions ---
-head_length   = 40;   // mm, nose to skirt collar – shorter/stubbier for cedar-plug action
-max_diameter  = 24;   // mm, widest point
+head_length   = 45;   // mm, nose to skirt collar – shorter/stubbier for cedar-plug action
+max_diameter  = 26;   // mm, widest point
 
 // --- Derived ---
 rx       = head_length / 2;     // X half-axis (fore-aft)
@@ -22,13 +22,13 @@ bore_d        = 2.4;            // mm, center hole for leader/cable
 // --- Eye sockets ---
 eye_d         = 8.5;            // mm, eye recess diameter
 eye_depth     = 2.0;            // mm, recess depth
-eye_x_offset  = 0;              // mm, fore-aft position
+eye_x_offset  = -1;             // mm, fore-aft position (moved back 1 mm)
 eye_y_offset  = ry + 1.0;       // start outside the head surface so the cut enters cleanly
 
 // --- Skirt flair shared dimensions ---
-flair_od      = 20.0;           // mm, flared outer diameter at the wide end
+flair_od      = 22.5;           // mm, flared outer diameter at the wide end
 flair_ramp    = 9.5;            // mm, length of the narrow→wide ramp
-flair_flat    = 5.0;            // mm, length of the wide flat section at the tail of each flair
+flair_flat    = 2.5;            // mm, length of the wide flat section at the tail of each flair
 
 // --- Front skirt flair (replaces shoulder, sits at head/collar junction) ---
 flair1_start_x = rx - 2;
@@ -57,7 +57,7 @@ jet_d         = 3.2;
 jet_start_x   = -4.0;           // moved forward toward nose
 jet_start_y   = 9.0;
 jet_start_z   = -8.0;
-jet_exit_x    = eye_x_offset + 6.0;
+jet_exit_x    = eye_x_offset + 4.0; // moved further back
 jet_exit_y    = 2.5;
 jet_exit_z    = ry + 1.0;
 
