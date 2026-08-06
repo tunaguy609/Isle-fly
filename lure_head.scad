@@ -148,10 +148,11 @@ difference() {
     }
 
     // --- Center bore (nose to tail) – straight axial tube, leader sleeve runs clean nose-to-collar ---
-    // Nose is solid; bore starts flush at the nose face (-rx).
+    // Bore starts 0.1mm proud of the nose face (-rx) and must reach 0.1mm past the collar tail end
+    // (collar extends to rx + collar_len - 4), so total length = 2*rx + collar_len - 4 + 0.2.
     translate([-rx - 0.1, 0, 0])
         rotate([0, 90, 0])
-            cylinder(d = bore_d, h = rx + collar_len - 4 + 0.2, $fn = 30);
+            cylinder(d = bore_d, h = 2 * rx + collar_len - 4 + 0.2, $fn = 30);
 
     // --- Skirt collar bore (hollow interior for skirt sleeve) ---
     // Extended 8mm deeper into the head (starts at rx-8 instead of rx);
