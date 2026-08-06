@@ -50,9 +50,10 @@ flair_end_x   = flair_mid_x + flair_flat;      // tail end of rear flair
 collar_d      = 18;             // mm, outer diameter
 collar_bore_d = 16;             // mm, inner bore diameter – hollow to accept skirt sleeve
 
-// Collar starts 4mm inside head, and ends exactly at rear flair tail
+// Collar starts 4mm inside head, and ends slightly before rear flair tail
+// to prevent any visible collar tail protruding past the last flair.
 collar_start_x = rx - 4;
-collar_end_x   = flair_end_x;
+collar_end_x   = flair_end_x - 0.5;
 
 // Derived
 collar_len    = collar_end_x - collar_start_x;
