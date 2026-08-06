@@ -9,10 +9,18 @@ head_length   = 40;   // mm, nose to skirt collar – shorter/stubbier for cedar
 max_diameter  = 26;   // mm, widest point
 
 // --- Derived ---
-rx       = head_length / 2;     // X half-axis (fore-aft) – used for nose/front half
+rx       = head_length / 2;     // X half-axis (fore-aft)
 rear_rx  = rx * 1.5;            // X half-axis for rear half – larger value = shallower rear taper
 ry       = max_diameter / 2;    // Y/Z half-axis (radial)
-front_ry = ry * 0.90;           // Nose-side radial scale for fuller, longer taper (less bulbous front half)
+
+// Smooth forward taper controls (nose-side only, blended to avoid any transition ledge)
+taper_start_x = -11.0;          // mm, where slimming begins (further forward than eye pocket zone)
+taper_end_x   = -rx;            // mm, nose tip
+taper_mid_x   = (taper_start_x + taper_end_x) / 2;
+taper_y_start = ry + 0.8;       // slightly outside body at start = zero cut at blend start
+taper_y_end   = ry * 0.86;      // narrower at nose for stronger forward taper
+taper_z_start = ry + 0.8;       // slightly outside body at start = zero cut at blend start
+taper_z_end   = ry * 0.84;      // crown/belly slimming at nose
 
 // --- Nose face (flat/cupped dish – cedar plug water-catch) ---
 face_d        = 16.0;           // mm, diameter of flat face cutout
@@ -82,13 +90,13 @@ rotate([0, 90, 0])
 difference() {
     union() {
         // Main egg-shaped head – asymmetric ellipsoid:
-        //   front half uses reduced radial scale for fuller taper, rear half uses rear_rx (shallower rear taper)
+        //   front half full radial width (protects eye pocket region), rear half uses rear_rx.
         // Front half (nose side, x ≤ 0)
         intersection() {
-            scale([rx, front_ry, front_ry])
+            scale([rx, ry, ry])
                 sphere(r = 1, $fn = 80);
             translate([-rx - 1, 0, 0])
-                cube([rx * 2 + 2, front_ry * 2 + 2, front_ry * 2 + 2], center = true);
+                cube([rx * 2 + 2, ry * 2 + 2, ry * 2 + 2], center = true);
         }
         // Rear half (tail side, x ≥ 0) – stretched X axis for shallower taper
         intersection() {
@@ -143,6 +151,20 @@ difference() {
         translate([(flair_mid_x + flair_end_x) / 2, 0, 0])
             rotate([0, 90, 0])
                 cylinder(d = flair_od, h = flair_end_x - flair_mid_x, center = true, $fn = 60);
+    }
+
+    // Smooth blended forward taper cut (no transition ledge):
+    // start profile is outside the body, then blends smaller toward the nose only.
+    hull() {
+        translate([taper_start_x, 0, 0])
+            scale([0.12, taper_y_start, taper_z_start])
+                sphere(r = 1, $fn = 72);
+        translate([taper_mid_x, 0, 0])
+            scale([0.12, (taper_y_start + taper_y_end) / 2, (taper_z_start + taper_z_end) / 2])
+                sphere(r = 1, $fn = 72);
+        translate([taper_end_x, 0, 0])
+            scale([0.12, taper_y_end, taper_z_end])
+                sphere(r = 1, $fn = 72);
     }
 
     // --- Center bore (nose to tail) – straight axial tube, leader sleeve runs clean nose-to-collar ---
