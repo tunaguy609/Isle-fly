@@ -1,7 +1,7 @@
 // ============================================================
 //  Blue Eye Konahead Trolling Lure Head
 //  34mm long x 24mm max diameter – cedar-plug action profile
-//  3D print orientation: nose facing down / flat face up
+//  3D print orientation: collar facing up / nose facing down on build plate
 // ============================================================
 
 // --- Main dimensions ---
@@ -63,6 +63,10 @@ jet_exit_z    = ry + 1.0;             // above the crown surface so the cut full
 // ============================================================
 //  Assembly
 // ============================================================
+// Rotate so collar points up (+Z) and translate to sit on build plate.
+// rotate([0,-90,0]) maps +X→+Z; collar tail is at x≈47, so translate +47 in Z.
+translate([0, 0, rx + collar_len - 4])
+rotate([0, -90, 0])
 difference() {
     union() {
         // Main egg-shaped head (scaled sphere)
