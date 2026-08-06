@@ -35,7 +35,7 @@ chin_h        = 3.0;            // mm, height of oval mouth (flatter = more aggr
 chin_x        = -rx + 1.5;      // mm, position along X – moved to nose for cedar-plug dart
 chin_z        = -(ry * 0.78);   // mm, position on underside (lower)
 chin_fillet_r = 2.0;            // mm, fillet radius blending the hard upper clip edge of the slot
-chin_slot_r   = 1.5;            // mm, edge-rounding radius applied to the entire slot volume
+chin_slot_r   = 0.8;            // mm, edge-rounding radius applied to the entire slot volume (must be < chin_h/2)
 // Slot is rotated 55° around Y: sweeps up and forward from the belly and terminates just below
 // the straight bore centreline (Z=0), so the bore tunnel remains fully clear and uninterrupted.
 
