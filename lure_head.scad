@@ -6,7 +6,7 @@
 
 // --- Main dimensions ---
 head_length   = 34;   // mm, nose to skirt collar – shorter/stubbier for cedar-plug action
-max_diameter  = 24;   // mm, widest point
+max_diameter  = 26;   // mm, widest point
 
 // --- Derived ---
 rx = head_length / 2;          // X half-axis (fore-aft)
