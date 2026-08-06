@@ -29,16 +29,6 @@ eye_depth     = 2.0;            // mm, recess depth
 eye_x_offset  = 2;              // mm, forward of centre
 eye_y_offset  = ry + 1.0;       // start outside the head surface so the cut enters cleanly – no flap
 
-// --- Chin slot ---
-chin_w        = 28;             // mm, width of horizontal oval mouth – widened for more action
-chin_h        = 3.0;            // mm, height of oval mouth (flatter = more aggressive)
-chin_x        = -rx + 1.5;      // mm, position along X – moved to nose for cedar-plug dart
-chin_z        = -(ry * 0.78);   // mm, position on underside (lower)
-chin_fillet_r = 2.0;            // mm, fillet radius blending the hard upper clip edge of the slot
-chin_slot_r   = 0.8;            // mm, edge-rounding radius applied to the entire slot volume (must be < chin_h/2)
-// Slot is rotated 55° around Y: sweeps up and forward from the belly and terminates just below
-// the straight bore centreline (Z=0), so the bore tunnel remains fully clear and uninterrupted.
-
 // --- Skirt collar (rear cylinder) ---
 collar_d      = 18;             // mm, outer diameter
 collar_bore_d = 16;             // mm, inner bore diameter – hollow to accept skirt sleeve
@@ -65,9 +55,9 @@ flair_end_x   = flair_mid_x + flair_flat;      // tail end of rear flair
 // --- Jets ---
 jet_d         = 3.2;            // mm jet tunnel diameter – wider bore for stronger water throw
 // Entries sit on the flanks of the belly, clearly outside the chin slot (chin_w/2 = 7mm edge)
-jet_start_x   = chin_x + 2.0;          // slightly behind chin slot front face so entries are beside it, not in it
-jet_start_y   = chin_w / 2 + 2.0;      // outside the chin slot edge – clear separation
-jet_start_z   = chin_z + 0.5;          // on the belly surface beside the chin slot
+jet_start_x   = 0;              // slightly behind center so entries stay beside the chin area
+jet_start_y   = 0;              // outside the chin slot edge – clear separation
+jet_start_z   = 0;              // on the belly surface beside the chin slot
 // Exits break through the crown (top) of the head, well clear of the eye sockets on the sides
 jet_exit_x    = eye_x_offset + 6.0;   // behind the eyes toward the tail
 jet_exit_y    = 1.5;                  // close to centreline at the crown – nowhere near eye pockets
@@ -171,34 +161,6 @@ difference() {
     translate([eye_x_offset, -eye_y_offset, 0])
         rotate([-90, 0, 0])
             cylinder(d = eye_d, h = eye_depth + 0.5, $fn = 80);
-
-    // --- Chin slot – all edges rounded via minkowski; no straight intersections remain ---
-    // chin_slot_r is the edge-rounding radius applied to the whole slot volume.
-    // The cylinder/sphere inside are shrunk by chin_slot_r so after the minkowski expansion
-    // the mouth of the slot stays the same overall size.
-    // The inside termination is still a hemispherical cap (hull tip sphere).
-    // The upper clip boundary is still a minkowski-rounded half-space (chin_fillet_r).
-    intersection() {
-        translate([chin_x, 0, chin_z])
-            rotate([0, 55, 0])
-                scale([chin_w/chin_h, 1, 1])
-                    minkowski() {
-                        hull() {
-                            cylinder(d = chin_h - 2 * chin_slot_r, h = ry * 1.2, $fn = 72);
-                            translate([0, 0, ry * 1.2])
-                                sphere(d = chin_h - 2 * chin_slot_r, $fn = 36);
-                        }
-                        sphere(r = chin_slot_r, $fn = 24);
-                    }
-        // Minkowski-rounded clip cube – top face at z = -(bore_d/2 + 1.5)
-        translate([0, 0, -(ry + rx) / 2 - bore_d / 2 - 1.5])
-            minkowski() {
-                cube([rx * 4 + collar_len - 2 * chin_fillet_r,
-                      ry * 4             - 2 * chin_fillet_r,
-                      ry + rx            - 2 * chin_fillet_r], center = true);
-                sphere(r = chin_fillet_r, $fn = 24);
-            }
-    }
 
     // --- Twin jet tunnels: entries on belly flanks outside chin slot, exits through crown ---
     // starboard jet
