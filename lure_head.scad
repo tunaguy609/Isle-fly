@@ -126,11 +126,12 @@ difference() {
             cylinder(d = face_d, h = face_depth + 0.1, $fn = 60);
 
     // --- Skirt collar bore (hollow interior for skirt sleeve) ---
-    // Extended 6mm deeper into the head (starts at rx-6 instead of rx);
-    // jet exits are at x≈8, collar bore now starts at x≈11 – 3mm clear.
-    translate([rx - 6, 0, 0])
+    // Extended 8mm deeper into the head (starts at rx-8 instead of rx);
+    // jet exits are at x≈8, collar bore now starts at x≈9 – 1mm clear is enough
+    // since the bore is centred (Z=0) and jets are offset well off-axis.
+    translate([rx - 8, 0, 0])
         rotate([0, 90, 0])
-            cylinder(d = collar_bore_d, h = collar_len + 6, $fn = 60);
+            cylinder(d = collar_bore_d, h = collar_len + 8, $fn = 60);
 
     // --- Eye socket – starboard (right, +Y side) ---
     translate([eye_x_offset, eye_y_offset, 0])
