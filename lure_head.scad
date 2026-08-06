@@ -9,16 +9,10 @@ head_length   = 40;   // mm, nose to skirt collar – shorter/stubbier for cedar
 max_diameter  = 26;   // mm, widest point
 
 // --- Derived ---
-rx       = head_length / 2;     // X half-axis (fore-aft)
+rx       = head_length / 2;     // X half-axis (fore-aft) – used for nose/front half
 rear_rx  = rx * 1.5;            // X half-axis for rear half – larger value = shallower rear taper
 ry       = max_diameter / 2;    // Y/Z half-axis (radial)
-
-// Gentle, safe forward contour controls (additive blend; cannot carve body away)
-nose_add_start_x = -12.0;       // mm, blend starts well forward of eye pockets
-nose_add_end_x   = -rx + 0.6;   // mm, near nose tip
-nose_add_mid_x   = (nose_add_start_x + nose_add_end_x) / 2;
-nose_add_y_end   = ry * 0.88;   // slimmer nose width target
-nose_add_z_end   = ry * 0.86;   // slimmer nose height target
+front_ry = ry * 0.90;           // Nose-side radial scale for fuller, longer taper (less bulbous front half)
 
 // --- Nose face (flat/cupped dish – cedar plug water-catch) ---
 face_d        = 16.0;           // mm, diameter of flat face cutout
@@ -87,13 +81,14 @@ translate([0, 0, rx + collar_len - 4])
 rotate([0, 90, 0])
 difference() {
     union() {
-        // Main egg-shaped head – smooth continuous body.
-        // Front half (nose side, x ≤ 0): full ry to avoid split-transition ledge.
+        // Main egg-shaped head – asymmetric ellipsoid:
+        //   front half uses reduced radial scale for fuller taper, rear half uses rear_rx (shallower rear taper)
+        // Front half (nose side, x ≤ 0)
         intersection() {
-            scale([rx, ry, ry])
+            scale([rx, front_ry, front_ry])
                 sphere(r = 1, $fn = 80);
             translate([-rx - 1, 0, 0])
-                cube([rx * 2 + 2, ry * 2 + 2, ry * 2 + 2], center = true);
+                cube([rx * 2 + 2, front_ry * 2 + 2, front_ry * 2 + 2], center = true);
         }
         // Rear half (tail side, x ≥ 0) – stretched X axis for shallower taper
         intersection() {
@@ -101,20 +96,6 @@ difference() {
                 sphere(r = 1, $fn = 80);
             translate([rear_rx + 1, 0, 0])
                 cube([rear_rx * 2 + 2, ry * 2 + 2, ry * 2 + 2], center = true);
-        }
-
-        // Safe forward contour helper (ADDITIVE):
-        // adds only a subtle nose-side blending shell so we never remove head volume.
-        hull() {
-            translate([nose_add_start_x, 0, 0])
-                scale([0.10, ry, ry])
-                    sphere(r = 1, $fn = 72);
-            translate([nose_add_mid_x, 0, 0])
-                scale([0.10, (ry + nose_add_y_end) / 2, (ry + nose_add_z_end) / 2])
-                    sphere(r = 1, $fn = 72);
-            translate([nose_add_end_x, 0, 0])
-                scale([0.10, nose_add_y_end, nose_add_z_end])
-                    sphere(r = 1, $fn = 72);
         }
 
         // Nose top ramp – linear profile from tip to max diameter on the upper side.
