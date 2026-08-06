@@ -82,8 +82,8 @@ difference() {
                 scale([1.0, 1.00, 0.98])
                     sphere(r = ry * 1.00, $fn = 90);
 
-            // Rear shoulder
-            translate([rx * 0.38, 0, 0])
+            // Rear shoulder (option 2: start later/more aft)
+            translate([rx * 0.50, 0, 0])
                 scale([1.0, 0.98, 0.95])
                     sphere(r = ry * 0.88, $fn = 80);
 
