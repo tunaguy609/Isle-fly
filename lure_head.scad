@@ -146,14 +146,10 @@ difference() {
     }
 
     // --- Center bore (nose to tail) – straight axial tube, leader sleeve runs clean nose-to-collar ---
-    translate([-rx - face_depth - 0.1, 0, 0])
+    // Nose is solid; bore starts flush at the nose face (-rx).
+    translate([-rx - 0.1, 0, 0])
         rotate([0, 90, 0])
-            cylinder(d = bore_d, h = rx + face_depth + collar_len - 4 + 0.2, $fn = 30);
-
-    // --- Nose face – flat dish cutout, shifted down so nose is closed above the leader hole ---
-    translate([-rx - 0.1, 0, -face_z_offset])
-        rotate([0, -90, 0])
-            cylinder(d = face_d, h = face_depth + 0.1, $fn = 60);
+            cylinder(d = bore_d, h = rx + collar_len - 4 + 0.2, $fn = 30);
 
     // --- Skirt collar bore (hollow interior for skirt sleeve) ---
     // Extended 8mm deeper into the head (starts at rx-8 instead of rx);
@@ -186,9 +182,9 @@ difference() {
         difference() {
             translate([0, 0, -(ry + rx) / 2])
                 cube([rx * 4 + collar_len, ry * 4, ry + rx], center = true);
-            translate([-rx - face_depth - 0.1, 0, 0])
+            translate([-rx - 0.1, 0, 0])
                 rotate([0, 90, 0])
-                    cylinder(d = bore_d, h = rx + face_depth + collar_len - 4 + 0.2, $fn = 60);
+                    cylinder(d = bore_d, h = rx + collar_len - 4 + 0.2, $fn = 60);
         }
     }
 
