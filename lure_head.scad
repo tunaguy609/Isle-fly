@@ -16,15 +16,6 @@ ry = max_diameter / 2;         // Y/Z half-axis (radial)
 face_d        = 16.0;           // mm, diameter of flat face cutout
 face_depth    = 3.0;            // mm, depth of the dish
 
-// --- Nose crown flatten ---
-// Shaves the top of the nose from tip (x=-rx) past the widest point (x=0)
-// so the flatten ramps up subtly rather than ending with a hard edge.
-// A large-radius cylinder clips the crown; its curved wall gives a softly
-// blended edge rather than a hard corner.
-nose_flat_depth  = 3.0;         // mm, how much to remove from the crown
-nose_flat_r      = 80.0;        // mm, cutting cylinder radius – larger = even gentler curvature on the edge
-nose_flat_extend = 10.0;        // mm, how far past the widest point (x=0) the cut extends to soften the rear edge
-
 // --- Bore (line-through hole) ---
 bore_d        = 2.0;            // mm, center hole for leader/cable
 bore_z_offset = 1.5;            // mm, upward offset of bore exit at nose (tows nose-down for action)
@@ -133,14 +124,6 @@ difference() {
     translate([-rx - 0.1, 0, 0])
         rotate([0, -90, 0])
             cylinder(d = face_d, h = face_depth + 0.1, $fn = 60);
-
-    // --- Nose crown flatten – gentle flat starting near the tip, tapering off past the widest point ---
-    // The cylinder extends from slightly behind the nose tip all the way to nose_flat_extend mm
-    // past the widest point (x=0), so there is no abrupt hard edge where the flat meets max diameter.
-    // Increasing nose_flat_r makes the transition even softer on all sides.
-    translate([(-rx + nose_flat_extend) / 2, 0, ry - nose_flat_depth + nose_flat_r])
-        rotate([0, 90, 0])
-            cylinder(r = nose_flat_r, h = rx + nose_flat_extend + 1, center = true, $fn = 120);
 
     // --- Skirt collar bore (hollow interior for skirt sleeve) ---
     // Extended 8mm deeper into the head (starts at rx-8 instead of rx);
