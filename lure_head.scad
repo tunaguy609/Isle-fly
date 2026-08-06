@@ -40,8 +40,7 @@ collar_len    = 36;             // mm, extended to accommodate double flair
 collar_x      = rx + collar_len / 2 - 4;  // tucks 4mm into head for smooth blend
 
 // --- Skirt flair shared dimensions ---
-flair1_od     = 20.0;          // mm, front flair max diameter
-flair2_od     = 18.0;          // mm, rear flair max diameter
+flair_od      = 20.0;          // mm, flared outer diameter at the wide end
 flair_ramp    = 9.5;           // mm, length of the narrow→wide ramp
 flair_flat    = 5.0;           // mm, length of the wide flat section at the tail of each flair
 
@@ -121,11 +120,11 @@ difference() {
                     cylinder(d = collar_d, h = 0.1, center = true, $fn = 60);
             translate([flair1_mid_x, 0, 0])
                 rotate([0, 90, 0])
-                    cylinder(d = flair1_od, h = 0.1, center = true, $fn = 60);
+                    cylinder(d = flair_od, h = 0.1, center = true, $fn = 60);
         }
         translate([(flair1_mid_x + flair1_end_x) / 2, 0, 0])
             rotate([0, 90, 0])
-                cylinder(d = flair1_od, h = flair1_end_x - flair1_mid_x, center = true, $fn = 60);
+                cylinder(d = flair_od, h = flair1_end_x - flair1_mid_x, center = true, $fn = 60);
 
         // Rear skirt flair – same profile, further down the collar
         hull() {
@@ -134,11 +133,11 @@ difference() {
                     cylinder(d = collar_d, h = 0.1, center = true, $fn = 60);
             translate([flair_mid_x, 0, 0])
                 rotate([0, 90, 0])
-                    cylinder(d = flair2_od, h = 0.1, center = true, $fn = 60);
+                    cylinder(d = flair_od, h = 0.1, center = true, $fn = 60);
         }
         translate([(flair_mid_x + flair_end_x) / 2, 0, 0])
             rotate([0, 90, 0])
-                cylinder(d = flair2_od, h = flair_end_x - flair_mid_x, center = true, $fn = 60);
+                cylinder(d = flair_od, h = flair_end_x - flair_mid_x, center = true, $fn = 60);
     }
 
     // --- Center bore (nose to tail) – offset upward at nose so lure tows nose-down ---
