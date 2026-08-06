@@ -173,15 +173,16 @@ difference() {
         rotate([-90, 0, 0])
             cylinder(d = eye_d, h = eye_depth + 0.5, $fn = 80);
 
-    // --- Chin slot – clipped to z≤0 so it only opens below the bore centreline ---
-    // The upper half (bore centreline to crown) remains solid – "filled in" as requested.
+    // --- Chin slot – clipped to z ≤ -(bore_d/2) so the bore tunnel wall is never broken ---
+    // The slot opens on the belly but stops bore_d/2 (= 1mm) below the bore centreline,
+    // leaving a full wall of material around the bore all the way to the nose face.
     intersection() {
         translate([chin_x, 0, chin_z])
             rotate([0, 55, 0])
                 scale([chin_w/chin_h, 1, 1])
                     cylinder(d = chin_h, h = ry * 1.2, $fn = 72);
-        // Lower half-space: z ≤ 0 (below bore centreline)
-        translate([0, 0, -(ry + rx) / 2])
+        // Lower half-space: z ≤ -(bore_d/2) – clears the bore wall on all sides
+        translate([0, 0, -(ry + rx) / 2 - bore_d / 2])
             cube([rx * 4 + collar_len, ry * 4, ry + rx], center = true);
     }
 
