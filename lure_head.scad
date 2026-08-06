@@ -36,19 +36,24 @@ chin_z        = -(ry * 0.78);   // mm, position on underside (lower)
 // --- Skirt collar (rear cylinder) ---
 collar_d      = 18;             // mm, outer diameter
 collar_bore_d = 16;             // mm, inner bore diameter – hollow to accept skirt sleeve
-collar_len    = 24;             // mm, shorter collar – less stabilisation, more head swing
+collar_len    = 36;             // mm, extended to accommodate double flair
 collar_x      = rx + collar_len / 2 - 4;  // tucks 4mm into head for smooth blend
 
-// --- Head-to-collar blend ---
-blend_d       = 20.0;          // mm, shoulder sphere diameter – clipped to max_diameter+4 so protrusion stays subtle
-
-// --- Skirt flair (exposed collar) ---
-// Exposed collar runs from shoulder rear edge (~x=30) to collar tail (~x=49), ~19mm
-// A cone ramps up from collar_d to flair_od over the first half, then holds flair_od to the tail
+// --- Skirt flair shared dimensions ---
 flair_od      = 18.0;          // mm, flared outer diameter at the wide end
-flair_start_x = rx + blend_d/2 + 0.5;          // just behind the shoulder hump
-flair_mid_x   = flair_start_x + 9.5;           // halfway point – where ramp peaks
-flair_end_x   = rx + collar_len - 4;            // tail end of collar
+flair_ramp    = 9.5;           // mm, length of the narrow→wide ramp
+flair_flat    = 5.0;           // mm, length of the wide flat section at the tail of each flair
+
+// --- Front skirt flair (replaces shoulder, sits at head/collar junction) ---
+// Ramps from collar_d (narrow) to flair_od (wide) going toward tail, then holds flair_od
+flair1_start_x = rx - 2;                        // starts 2mm before head rear edge
+flair1_mid_x   = flair1_start_x + flair_ramp;  // where ramp peaks
+flair1_end_x   = flair1_mid_x + flair_flat;    // tail end of this flair
+
+// --- Rear skirt flair (original, sits further down the collar) ---
+flair_start_x = flair1_end_x + 2;              // starts 2mm behind the front flair tail
+flair_mid_x   = flair_start_x + flair_ramp;    // halfway point – where ramp peaks
+flair_end_x   = flair_mid_x + flair_flat;      // tail end of rear flair
 
 // --- Jets ---
 jet_d         = 3.2;            // mm jet tunnel diameter – wider bore for stronger water throw
@@ -108,19 +113,20 @@ difference() {
             rotate([0, 90, 0])
                 cylinder(d = collar_d, h = collar_len, center = true, $fn = 60);
 
-        // Rear shoulder – sphere clipped to a cylinder so it protrudes only slightly beyond
-        // max_diameter (26mm), giving a subtle ring rather than a bulging hump.
-        // blend_d controls how wide the sphere is; the cylinder caps the radial extent.
-        translate([rx, 0, 0])
-            intersection() {
-                sphere(d = blend_d, $fn = 60);
+        // Front skirt flair (replaces shoulder) – ramps narrow→wide toward tail
+        hull() {
+            translate([flair1_start_x, 0, 0])
                 rotate([0, 90, 0])
-                    cylinder(d = max_diameter + 4, h = blend_d, center = true, $fn = 60);
-            }
+                    cylinder(d = collar_d, h = 0.1, center = true, $fn = 60);
+            translate([flair1_mid_x, 0, 0])
+                rotate([0, 90, 0])
+                    cylinder(d = flair_od, h = 0.1, center = true, $fn = 60);
+        }
+        translate([(flair1_mid_x + flair1_end_x) / 2, 0, 0])
+            rotate([0, 90, 0])
+                cylinder(d = flair_od, h = flair1_end_x - flair1_mid_x, center = true, $fn = 60);
 
-        // Skirt flair – cone ramps from collar_d up to flair_od at the midpoint,
-        // then a cylinder holds that diameter to the tail end
-        // Ramp section: collar_d at flair_start_x → flair_od at flair_mid_x
+        // Rear skirt flair – same profile, further down the collar
         hull() {
             translate([flair_start_x, 0, 0])
                 rotate([0, 90, 0])
@@ -129,7 +135,6 @@ difference() {
                 rotate([0, 90, 0])
                     cylinder(d = flair_od, h = 0.1, center = true, $fn = 60);
         }
-        // Flat section: flair_od cylinder from midpoint to tail
         translate([(flair_mid_x + flair_end_x) / 2, 0, 0])
             rotate([0, 90, 0])
                 cylinder(d = flair_od, h = flair_end_x - flair_mid_x, center = true, $fn = 60);
