@@ -9,9 +9,10 @@ head_length   = 40;   // mm, nose to skirt collar – shorter/stubbier for cedar
 max_diameter  = 26;   // mm, widest point
 
 // --- Derived ---
-rx      = head_length / 2;     // X half-axis (fore-aft) – used for nose/front half
-rear_rx = rx * 1.5;            // X half-axis for rear half – larger value = shallower rear taper
-ry      = max_diameter / 2;    // Y/Z half-axis (radial)
+rx       = head_length / 2;     // X half-axis (fore-aft) – used for nose/front half
+rear_rx  = rx * 1.5;            // X half-axis for rear half – larger value = shallower rear taper
+ry       = max_diameter / 2;    // Y/Z half-axis (radial)
+front_ry = ry * 0.90;           // Nose-side radial scale for fuller, longer taper (less bulbous front half)
 
 // --- Nose face (flat/cupped dish – cedar plug water-catch) ---
 face_d        = 16.0;           // mm, diameter of flat face cutout
@@ -81,13 +82,13 @@ rotate([0, 90, 0])
 difference() {
     union() {
         // Main egg-shaped head – asymmetric ellipsoid:
-        //   front half uses rx (steeper nose taper), rear half uses rear_rx (shallower rear taper)
+        //   front half uses reduced radial scale for fuller taper, rear half uses rear_rx (shallower rear taper)
         // Front half (nose side, x ≤ 0)
         intersection() {
-            scale([rx, ry, ry])
+            scale([rx, front_ry, front_ry])
                 sphere(r = 1, $fn = 80);
             translate([-rx - 1, 0, 0])
-                cube([rx * 2 + 2, ry * 2 + 2, ry * 2 + 2], center = true);
+                cube([rx * 2 + 2, front_ry * 2 + 2, front_ry * 2 + 2], center = true);
         }
         // Rear half (tail side, x ≥ 0) – stretched X axis for shallower taper
         intersection() {
@@ -103,7 +104,7 @@ difference() {
         intersection() {
             hull() {
                 translate([-rx, 0, 0])
-                    sphere(r = 0.2, $fn = 30);
+                    sphere(r = 0.5, $fn = 30);
                 rotate([0, 90, 0])
                     cylinder(r = ry, h = 0.1, center = true, $fn = 80);
             }
