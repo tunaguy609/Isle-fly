@@ -173,12 +173,17 @@ difference() {
         rotate([-90, 0, 0])
             cylinder(d = eye_d, h = eye_depth + 0.5, $fn = 80);
 
-    // --- Chin slot – angles up and out from belly, terminates just below bore centreline (Z=0) ---
-    // 55° rotation: from chin_z ≈ -10mm the slot sweeps up ~9mm, ending ≈ -1mm below the bore.
-    translate([chin_x, 0, chin_z])
-        rotate([0, 55, 0])                 // steeper than 45° → sweeps more upward toward bore
-            scale([chin_w/chin_h, 1, 1])   // horizontal oval
-                cylinder(d = chin_h, h = ry * 1.2, $fn = 72);
+    // --- Chin slot – clipped to z≤0 so it only opens below the bore centreline ---
+    // The upper half (bore centreline to crown) remains solid – "filled in" as requested.
+    intersection() {
+        translate([chin_x, 0, chin_z])
+            rotate([0, 55, 0])
+                scale([chin_w/chin_h, 1, 1])
+                    cylinder(d = chin_h, h = ry * 1.2, $fn = 72);
+        // Lower half-space: z ≤ 0 (below bore centreline)
+        translate([0, 0, -(ry + rx) / 2])
+            cube([rx * 4 + collar_len, ry * 4, ry + rx], center = true);
+    }
 
     // --- Twin jet tunnels: entries on belly flanks outside chin slot, exits through crown ---
     // starboard jet
