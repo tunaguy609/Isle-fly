@@ -6,7 +6,7 @@
 
 // --- Main dimensions ---
 head_length   = 40;   // mm, nose to skirt collar – shorter/stubbier for cedar-plug action
-max_diameter  = 26;   // mm, widest point
+max_diameter  = 24;   // mm, widest point
 
 // --- Derived ---
 rx       = head_length / 2;     // X half-axis (fore-aft) – used for nose/front half
@@ -25,9 +25,9 @@ bore_d        = 2.4;            // mm, center hole for leader/cable
 // Bore runs straight along the X axis (no Z offset) so the leader sleeve is one clean tube nose-to-collar.
 
 // --- Eye sockets ---
-eye_d         = 10;             // mm, eye recess diameter
+eye_d         = 8.5;            // mm, eye recess diameter
 eye_depth     = 2.0;            // mm, recess depth
-eye_x_offset  = 2;              // mm, forward of centre
+eye_x_offset  = 0;              // mm, forward of centre
 eye_y_offset  = ry + 1.0;       // start outside the head surface so the cut enters cleanly – no flap
 
 // --- Skirt flair shared dimensions ---
@@ -81,36 +81,33 @@ translate([0, 0, rx + collar_len - 4])
 rotate([0, 90, 0])
 difference() {
     union() {
-        // Main egg-shaped head – asymmetric ellipsoid:
-        //   front half uses reduced radial scale for fuller taper, rear half uses rear_rx (shallower rear taper)
-        // Front half (nose side, x ≤ 0)
-        intersection() {
-            scale([rx, front_ry, front_ry])
-                sphere(r = 1, $fn = 80);
-            translate([-rx - 1, 0, 0])
-                cube([rx * 2 + 2, front_ry * 2 + 2, front_ry * 2 + 2], center = true);
-        }
-        // Rear half (tail side, x ≥ 0) – stretched X axis for shallower taper
-        intersection() {
-            scale([rear_rx, ry, ry])
-                sphere(r = 1, $fn = 80);
-            translate([rear_rx + 1, 0, 0])
-                cube([rear_rx * 2 + 2, ry * 2 + 2, ry * 2 + 2], center = true);
-        }
+        // Smooth cedar-plug style body (single continuous loft)
+        // Control stations along X: nose -> belly max -> shoulder -> collar blend
+        hull() {
+            // Nose tip (small, slightly flattened)
+            translate([-rx, 0, 0])
+                scale([1.0, 0.92, 0.88])
+                    sphere(r = 0.9, $fn = 64);
 
-        // Nose top ramp – linear profile from tip to max diameter on the upper side.
-        // A cone (hull of nose tip → max-diameter circle) is clipped to z≥0 so only
-        // the crown is affected; the lower body and sides remain the egg shape.
-        intersection() {
-            hull() {
-                translate([-rx, 0, 0])
-                    sphere(r = 0.5, $fn = 30);
+            // Forward body
+            translate([-rx * 0.52, 0, 0])
+                scale([1.0, 1.00, 0.96])
+                    sphere(r = ry * 0.78, $fn = 80);
+
+            // Max girth
+            translate([-rx * 0.10, 0, 0])
+                scale([1.0, 1.00, 0.98])
+                    sphere(r = ry * 1.00, $fn = 90);
+
+            // Rear shoulder
+            translate([rx * 0.38, 0, 0])
+                scale([1.0, 0.98, 0.95])
+                    sphere(r = ry * 0.88, $fn = 80);
+
+            // Blend into collar start so there is no hard step
+            translate([rx - 3.5, 0, 0])
                 rotate([0, 90, 0])
-                    cylinder(r = ry, h = 0.1, center = true, $fn = 80);
-            }
-            // Upper half-space: z ≥ 0
-            translate([0, 0, (ry + rx) / 2])
-                cube([rx * 2 + 2, ry * 2 + 2, ry + rx], center = true);
+                    cylinder(d1 = ry * 1.70, d2 = collar_d, h = 3.5, $fn = 80);
         }
 
         // Skirt collar at rear
