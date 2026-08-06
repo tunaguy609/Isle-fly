@@ -60,7 +60,7 @@ jet_start_y   = 9.0;            // outside the body centerline, on the flank
 jet_start_z   = -8.0;           // lower belly entry
 // Exits break through the crown (top) of the head, well clear of the eye sockets on the sides
 jet_exit_x    = eye_x_offset + 6.0;   // behind the eyes toward the tail
-jet_exit_y    = 1.5;                  // close to centreline at the crown – nowhere near eye pockets
+jet_exit_y    = 2.5;                  // close to centreline at the crown – nowhere near eye pockets
 jet_exit_z    = ry + 1.0;             // above the crown surface so the cut fully breaks through
 
 // ============================================================
