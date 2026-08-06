@@ -16,6 +16,8 @@ ry      = max_diameter / 2;    // Y/Z half-axis (radial)
 // --- Nose face (flat/cupped dish – cedar plug water-catch) ---
 face_d        = 16.0;           // mm, diameter of flat face cutout
 face_depth    = 3.0;            // mm, depth of the dish
+face_z_offset = face_d / 2;    // mm, shift dish down so its top edge sits at the bore centreline –
+                                //     nose is solid above the leader hole
 
 // --- Bore (line-through hole) ---
 bore_d        = 2.0;            // mm, center hole for leader/cable
@@ -148,8 +150,8 @@ difference() {
         rotate([0, 90, 0])
             cylinder(d = bore_d, h = rx + face_depth + collar_len - 4 + 0.2, $fn = 30);
 
-    // --- Nose face – flat dish cutout for cedar-plug water-catch action ---
-    translate([-rx - 0.1, 0, 0])
+    // --- Nose face – flat dish cutout, shifted down so nose is closed above the leader hole ---
+    translate([-rx - 0.1, 0, -face_z_offset])
         rotate([0, -90, 0])
             cylinder(d = face_d, h = face_depth + 0.1, $fn = 60);
 
