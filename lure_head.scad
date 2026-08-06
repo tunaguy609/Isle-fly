@@ -107,6 +107,14 @@ difference() {
                 cylinder(d = bore_d, h = 0.1, $fn = 30);
     }
 
+    // --- Nose bore stub – straight axial segment bridging the dish floor to the angled bore ---
+    // The angled bore is offset upward (bore_z_offset) so its entry clips the dish off-centre;
+    // this short straight cylinder (Z=0, centred in the dish) closes the gap and ensures the
+    // leader sleeve has a clean, uninterrupted tunnel from the nose face into the head.
+    translate([-rx - face_depth - 0.1, 0, 0])
+        rotate([0, 90, 0])
+            cylinder(d = bore_d, h = face_depth + bore_z_offset + 2, $fn = 30);
+
     // --- Nose face – flat dish cutout for cedar-plug water-catch action ---
     translate([-rx - 0.1, 0, 0])
         rotate([0, -90, 0])
