@@ -173,17 +173,22 @@ difference() {
         rotate([-90, 0, 0])
             cylinder(d = eye_d, h = eye_depth + 0.5, $fn = 80);
 
-    // --- Chin slot – clipped to z ≤ -(bore_d/2) so the bore tunnel wall is never broken ---
-    // The slot opens on the belly but stops bore_d/2 (= 1mm) below the bore centreline,
-    // leaving a full wall of material around the bore all the way to the nose face.
+    // --- Chin slot – upper boundary follows the bore outer surface for a smooth curved blend ---
+    // The clipping volume is (z≤0 half-space) minus the bore cylinder, so wherever the slot
+    // would meet the bore wall the cut is bounded by the bore's own curved surface – no hard ledge.
     intersection() {
         translate([chin_x, 0, chin_z])
             rotate([0, 55, 0])
                 scale([chin_w/chin_h, 1, 1])
                     cylinder(d = chin_h, h = ry * 1.2, $fn = 72);
-        // Lower half-space: z ≤ -(bore_d/2) – clears the bore wall on all sides
-        translate([0, 0, -(ry + rx) / 2 - bore_d / 2])
-            cube([rx * 4 + collar_len, ry * 4, ry + rx], center = true);
+        // z ≤ 0 half-space with the bore cylinder removed → smooth curved upper boundary
+        difference() {
+            translate([0, 0, -(ry + rx) / 2])
+                cube([rx * 4 + collar_len, ry * 4, ry + rx], center = true);
+            translate([-rx - face_depth - 0.1, 0, 0])
+                rotate([0, 90, 0])
+                    cylinder(d = bore_d, h = rx + face_depth + collar_len - 4 + 0.2, $fn = 60);
+        }
     }
 
     // --- Twin jet tunnels: entries on belly flanks outside chin slot, exits through crown ---
