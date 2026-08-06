@@ -51,7 +51,7 @@ flair1_mid_x   = flair1_start_x + flair_ramp;  // where ramp peaks
 flair1_end_x   = flair1_mid_x + flair_flat;    // tail end of this flair
 
 // --- Rear skirt flair (original, sits further down the collar) ---
-flair_gap     = 6;                              // mm, gap between the two flairs
+flair_gap     = 0;                              // mm, gap between the two flairs
 flair_start_x = flair1_end_x + flair_gap;      // starts 6mm behind the front flair tail
 flair_mid_x   = flair_start_x + flair_ramp;    // halfway point – where ramp peaks
 flair_end_x   = flair_mid_x + flair_flat;      // tail end of rear flair
@@ -140,11 +140,6 @@ difference() {
             rotate([0, 90, 0])
                 cylinder(d = flair_od, h = flair_end_x - flair_mid_x, center = true, $fn = 60);
     }
-
-    // --- Waist groove between the two flairs ---
-    translate([(flair1_end_x + flair_start_x) / 2, 0, 0])
-        rotate([0, 90, 0])
-            cylinder(d = collar_d - 2, h = flair_gap - 1, center = true, $fn = 60);
 
     // --- Center bore (nose to tail) – offset upward at nose so lure tows nose-down ---
     // Nose endpoint pushed forward past the dish depth so the hole breaks cleanly
