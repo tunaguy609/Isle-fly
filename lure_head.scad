@@ -20,7 +20,7 @@ face_z_offset = face_d / 2 + bore_d / 2; // mm, shift dish down so its top edge 
                                 //     full bore wall thickness is preserved all the way to the nose face
 
 // --- Bore (line-through hole) ---
-bore_d        = 2.0;            // mm, center hole for leader/cable
+bore_d        = 2.4;            // mm, center hole for leader/cable
 // Bore runs straight along the X axis (no Z offset) so the leader sleeve is one clean tube nose-to-collar.
 
 // --- Eye sockets ---
