@@ -39,7 +39,7 @@ collar_len    = 24;             // mm, shorter collar – less stabilisation, mo
 collar_x      = rx + collar_len / 2 - 4;  // tucks 4mm into head for smooth blend
 
 // --- Head-to-collar blend ---
-blend_d       = 30.0;          // mm, shoulder sphere diameter – clipped to max_diameter+4 so protrusion stays subtle
+blend_d       = 20.0;          // mm, shoulder sphere diameter – clipped to max_diameter+4 so protrusion stays subtle
 
 // --- Skirt flair (exposed collar) ---
 // Exposed collar runs from shoulder rear edge (~x=30) to collar tail (~x=49), ~19mm
