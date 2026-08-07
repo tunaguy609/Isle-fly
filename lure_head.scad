@@ -23,7 +23,7 @@ bore_d        = 2.4;            // mm, center hole for leader/cable
 // --- Eye sockets ---
 eye_d         = 8.5;            // mm, eye recess diameter
 eye_depth     = 2.0;            // mm, recess depth
-eye_x_offset  = -3;             // mm, moved 2 mm farther back
+eye_x_offset  = -8;             // mm, moved 5 mm farther back from current position
 eye_y_offset  = ry + 1.0;       // start outside the head surface so the cut enters cleanly
 
 // --- Skirt flair shared dimensions ---
@@ -113,12 +113,11 @@ difference() {
                 cylinder(d = flair_od, h = flair_end_x - flair_mid_x, center = true, $fn = 60);
     }
 
-    // Broad cupped nose face: subtract a shallow spherical scoop over the whole front
+    // Broad cupped nose face with rounded rim
     translate([-rx + 2.0, 0, 0])
         scale([1.0, 1.0, 0.85])
             sphere(d = face_cup_d, $fn = 96);
 
-    // Keep the leader bore
     translate([-rx - 0.2, 0, 0])
         rotate([0, 90, 0])
             cylinder(d = bore_d, h = (collar_end_x - (-rx)) + 0.4, $fn = 40);
