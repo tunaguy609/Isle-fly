@@ -15,6 +15,7 @@ ry       = max_diameter / 2;    // Y/Z half-axis (radial)
 // --- Nose face (flat/cupped dish – cedar plug water-catch) ---
 face_d        = 16.0;           // mm, diameter of flat face cutout
 face_depth    = 6.0;            // mm, deeper cup for stronger water catch
+face_cup_d    = 24.0;           // mm, cup diameter used to dish the whole nose face
 
 // --- Bore (line-through hole) ---
 bore_d        = 2.4;            // mm, center hole for leader/cable
@@ -112,11 +113,12 @@ difference() {
                 cylinder(d = flair_od, h = flair_end_x - flair_mid_x, center = true, $fn = 60);
     }
 
-    // Make the whole nose face dished with a broad shallow scoop, not just the bore area
-    translate([-rx - 0.01, 0, 0])
-        rotate([0, 90, 0])
-            cylinder(d1 = 24.0, d2 = face_d, h = face_depth + 0.02, $fn = 80);
+    // Broad cupped nose face: subtract a shallow spherical scoop over the whole front
+    translate([-rx + 2.0, 0, 0])
+        scale([1.0, 1.0, 0.85])
+            sphere(d = face_cup_d, $fn = 96);
 
+    // Keep the leader bore
     translate([-rx - 0.2, 0, 0])
         rotate([0, 90, 0])
             cylinder(d = bore_d, h = (collar_end_x - (-rx)) + 0.4, $fn = 40);
