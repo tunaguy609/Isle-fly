@@ -162,16 +162,16 @@ difference() {
     // --- Twin jet tunnels ---
     hull() {
         translate([jet_start_x,  jet_start_y, jet_start_z])
-            rotate([0, 90, 0]) cylinder(d = jet_d, h = 0.8, center = true, $fn = 36);
+            rotate([0, 90, 0]) cylinder(d = jet_d, h = 1.2, center = true, $fn = 44);
         translate([jet_exit_x,   jet_exit_y, jet_exit_z])
-            rotate([0, 90, 0]) cylinder(d = jet_d, h = 0.8, center = true, $fn = 36);
+            rotate([0, 90, 0]) cylinder(d = jet_d, h = 1.2, center = true, $fn = 44);
     }
 
     hull() {
         translate([jet_start_x, -jet_start_y, jet_start_z])
-            rotate([0, 90, 0]) cylinder(d = jet_d, h = 0.8, center = true, $fn = 36);
+            rotate([0, 90, 0]) cylinder(d = jet_d, h = 1.2, center = true, $fn = 44);
         translate([jet_exit_x,  -jet_exit_y, jet_exit_z])
-            rotate([0, 90, 0]) cylinder(d = jet_d, h = 0.8, center = true, $fn = 36);
+            rotate([0, 90, 0]) cylinder(d = jet_d, h = 1.2, center = true, $fn = 44);
     }
 
     // --- Center jet tunnel (larger, middle, exits farther back) ---
