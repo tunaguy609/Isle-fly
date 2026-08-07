@@ -70,24 +70,15 @@ difference() {
     union() {
         // Smooth cedar-plug style body (single continuous loft)
         hull() {
-            // Nose tip seed removed to eliminate detached floating artifact
-
-            // Forward body
             translate([-rx * 0.52, 0, 0])
                 scale([1.0, 1.00, 0.96])
                     sphere(r = ry * 0.78, $fn = 80);
-
-            // Max girth
             translate([-rx * 0.10, 0, 0])
                 scale([1.0, 1.00, 0.98])
                     sphere(r = ry * 1.00, $fn = 90);
-
-            // Rear shoulder (option 2: start later/more aft)
             translate([rx * 0.50, 0, 0])
                 scale([1.0, 0.98, 0.95])
                     sphere(r = ry * 0.88, $fn = 80);
-
-            // Blend into collar start so there is no hard step
             translate([rx - 3.5, 0, 0])
                 rotate([0, 90, 0])
                     cylinder(d1 = ry * 1.70, d2 = collar_d, h = 3.5, $fn = 80);
