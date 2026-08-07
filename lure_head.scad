@@ -14,7 +14,7 @@ ry       = max_diameter / 2;    // Y/Z half-axis (radial)
 
 // --- Nose face (flat/cupped dish – cedar plug water-catch) ---
 face_d        = 16.0;           // mm, diameter of flat face cutout
-face_depth    = 4.0;            // mm, depth of the dish (increased for more cup)
+face_depth    = 6.0;            // mm, deeper cup for stronger water catch
 
 // --- Bore (line-through hole) ---
 bore_d        = 2.4;            // mm, center hole for leader/cable
@@ -68,7 +68,6 @@ translate([0, 0, rx + collar_len - 4])
 rotate([0, 90, 0])
 difference() {
     union() {
-        // Smooth cedar-plug style body (single continuous loft)
         hull() {
             translate([-rx * 0.52, 0, 0])
                 scale([1.0, 1.00, 0.96])
@@ -84,12 +83,10 @@ difference() {
                     cylinder(d1 = ry * 1.70, d2 = collar_d, h = 3.5, $fn = 80);
         }
 
-        // Skirt collar at rear
         translate([collar_x, 0, 0])
             rotate([0, 90, 0])
                 cylinder(d = collar_d, h = collar_len, center = true, $fn = 60);
 
-        // Front skirt flair
         hull() {
             translate([flair1_start_x, 0, 0])
                 rotate([0, 90, 0])
@@ -102,7 +99,6 @@ difference() {
             rotate([0, 90, 0])
                 cylinder(d = flair_od, h = flair1_end_x - flair1_mid_x, center = true, $fn = 60);
 
-        // Rear skirt flair
         hull() {
             translate([flair_start_x, 0, 0])
                 rotate([0, 90, 0])
@@ -116,22 +112,18 @@ difference() {
                 cylinder(d = flair_od, h = flair_end_x - flair_mid_x, center = true, $fn = 60);
     }
 
-    // --- Cupped nose dish ---
     translate([-rx - 0.01, 0, 0])
         rotate([0, 90, 0])
             cylinder(d = face_d, h = face_depth + 0.02, $fn = 80);
 
-    // --- Center bore (leader line through-hole, nose to tail) ---
     translate([-rx - 0.2, 0, 0])
         rotate([0, 90, 0])
             cylinder(d = bore_d, h = (collar_end_x - (-rx)) + 0.4, $fn = 40);
 
-    // --- Skirt collar bore ---
     translate([rx - 8, 0, 0])
         rotate([0, 90, 0])
             cylinder(d = collar_bore_d, h = collar_len + 8, $fn = 60);
 
-    // --- Eye sockets ---
     translate([eye_x_offset, eye_y_offset, 0])
         rotate([90, 0, 0])
             cylinder(d = eye_d, h = eye_depth + 0.5, $fn = 80);
@@ -140,7 +132,6 @@ difference() {
         rotate([-90, 0, 0])
             cylinder(d = eye_d, h = eye_depth + 0.5, $fn = 80);
 
-    // --- Twin jet tunnels ---
     hull() {
         translate([jet_start_x,  jet_start_y, jet_start_z])
             rotate([0, 90, 0]) cylinder(d = jet_d, h = 1.2, center = true, $fn = 44);
