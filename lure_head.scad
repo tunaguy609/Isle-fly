@@ -112,10 +112,10 @@ difference() {
                 cylinder(d = flair_od, h = flair_end_x - flair_mid_x, center = true, $fn = 60);
     }
 
-    // Tapered nose cup using a chamfered opening instead of a hard edge
+    // Make the whole nose face dished with a broad shallow scoop, not just the bore area
     translate([-rx - 0.01, 0, 0])
         rotate([0, 90, 0])
-            cylinder(d1 = face_d + 4.0, d2 = face_d, h = face_depth + 0.02, $fn = 80);
+            cylinder(d1 = 24.0, d2 = face_d, h = face_depth + 0.02, $fn = 80);
 
     translate([-rx - 0.2, 0, 0])
         rotate([0, 90, 0])
