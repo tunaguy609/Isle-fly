@@ -22,7 +22,7 @@ bore_d        = 2.4;            // mm, center hole for leader/cable
 // --- Eye sockets ---
 eye_d         = 8.5;            // mm, eye recess diameter
 eye_depth     = 2.0;            // mm, recess depth
-eye_x_offset  = -1;             // mm, fore-aft position (moved back 1 mm)
+eye_x_offset  = -3;             // mm, moved 2 mm farther back
 eye_y_offset  = ry + 1.0;       // start outside the head surface so the cut enters cleanly
 
 // --- Skirt flair shared dimensions ---
