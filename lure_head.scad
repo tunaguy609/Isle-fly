@@ -54,8 +54,8 @@ collar_x      = (collar_start_x + collar_end_x) / 2;
 
 // --- Jets ---
 jet_d         = 3.2;
-jet_start_x   = -5.0;           // moved 1 mm farther forward toward nose
-jet_start_y   = 9.0;
+jet_start_x   = -5.0;
+jet_start_y   = 10.0;           // start farther from center to steepen the entrance slope
 jet_start_z   = -8.0;
 jet_exit_x    = eye_x_offset + 4.0; // moved further back
 jet_exit_y    = 2.5;
