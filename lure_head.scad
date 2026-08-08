@@ -58,7 +58,7 @@ jet_d         = 3.2;
 jet_start_x   = -5.0;
 jet_start_y   = 10.0;           // start farther from center to steepen the entrance slope
 jet_start_z   = -8.0;
-jet_exit_x    = rx - 1.5;       // exit near the rear end of the main head
+jet_exit_x    = rx - 3.5;       // moved 2mm toward nose from rx-1.5
 jet_exit_y    = 2.5;
 jet_exit_z    = ry + 1.0;
 
