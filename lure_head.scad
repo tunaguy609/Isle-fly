@@ -62,6 +62,12 @@ jet_exit_x    = rx - 1.5;       // exit near the rear end of the main head
 jet_exit_y    = 2.5;
 jet_exit_z    = ry + 1.0;
 
+// --- Face cup jets (new: radiating around the nose face cup) ---
+face_jet_d    = 2.8;            // slightly smaller diameter for face jets
+face_jet_start_r = 4.0;         // radial distance from center for entry points
+face_jet_start_x = -rx + 8.0;   // position along the face region
+face_jet_exit_x  = -rx + 2.0;   // exit position within/near the cup
+
 // ============================================================
 //  Assembly
 // ============================================================
@@ -145,5 +151,33 @@ difference() {
             rotate([0, 90, 0]) cylinder(d = jet_d, h = 1.2, center = true, $fn = 44);
         translate([jet_exit_x,  -jet_exit_y, jet_exit_z])
             rotate([0, 90, 0]) cylinder(d = jet_d, h = 1.2, center = true, $fn = 44);
+    }
+
+    hull() {
+        translate([face_jet_start_x,  face_jet_start_r, 0])
+            rotate([0, 90, 0]) cylinder(d = face_jet_d, h = 1.2, center = true, $fn = 40);
+        translate([face_jet_exit_x,   1.0, 0])
+            rotate([0, 90, 0]) cylinder(d = face_jet_d, h = 1.2, center = true, $fn = 40);
+    }
+
+    hull() {
+        translate([face_jet_start_x, -face_jet_start_r, 0])
+            rotate([0, 90, 0]) cylinder(d = face_jet_d, h = 1.2, center = true, $fn = 40);
+        translate([face_jet_exit_x,  -1.0, 0])
+            rotate([0, 90, 0]) cylinder(d = face_jet_d, h = 1.2, center = true, $fn = 40);
+    }
+
+    hull() {
+        translate([face_jet_start_x, 0,  face_jet_start_r])
+            rotate([0, 90, 0]) cylinder(d = face_jet_d, h = 1.2, center = true, $fn = 40);
+        translate([face_jet_exit_x,  0, 1.0])
+            rotate([0, 90, 0]) cylinder(d = face_jet_d, h = 1.2, center = true, $fn = 40);
+    }
+
+    hull() {
+        translate([face_jet_start_x, 0, -face_jet_start_r])
+            rotate([0, 90, 0]) cylinder(d = face_jet_d, h = 1.2, center = true, $fn = 40);
+        translate([face_jet_exit_x,  0, -1.0])
+            rotate([0, 90, 0]) cylinder(d = face_jet_d, h = 1.2, center = true, $fn = 40);
     }
 }
