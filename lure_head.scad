@@ -53,7 +53,7 @@ collar_end_x   = flair_end_x - 0.5;
 collar_len    = collar_end_x - collar_start_x;
 collar_x      = (collar_start_x + collar_end_x) / 2;
 
-// --- Jets ---
+// --- Jets (original layout only) ---
 jet_d         = 3.2;
 jet_start_x   = -5.0;
 jet_start_y   = 10.0;           // start farther from center to steepen the entrance slope
@@ -61,17 +61,6 @@ jet_start_z   = -8.0;
 jet_exit_x    = rx - 1.5;       // exit near the rear end of the main head
 jet_exit_y    = 2.5;
 jet_exit_z    = ry + 1.0;
-
-// --- Face cup jets (new: radiating around the nose face cup) ---
-face_jet_d           = 3.6;         // bigger so openings are obvious
-face_jet_start_r     = 6.0;         // farther from center for clear cup entries
-face_jet_start_x     = -rx + 13.0; // deeper in body for longer channels
-face_jet_exit_x      = -rx - 1.4;  // overshoot past nose face to guarantee breakout
-face_jet_exit_inset  = 2.4;         // spread exits so they don't collapse near center
-
-// --- Explicit port punches (guarantee visible jet openings) ---
-face_port_d          = face_jet_d + 0.8;
-face_port_len        = 2.2;
 
 // ============================================================
 //  Assembly
@@ -157,74 +146,4 @@ difference() {
         translate([jet_exit_x,  -jet_exit_y, jet_exit_z])
             rotate([0, 90, 0]) cylinder(d = jet_d, h = 1.2, center = true, $fn = 44);
     }
-
-    // Face jets
-    hull() {
-        translate([face_jet_start_x,  face_jet_start_r, 0])
-            rotate([0, 90, 0]) cylinder(d = face_jet_d, h = 1.2, center = true, $fn = 40);
-        translate([face_jet_exit_x,   face_jet_exit_inset, 0])
-            rotate([0, 90, 0]) cylinder(d = face_jet_d, h = 1.2, center = true, $fn = 40);
-    }
-
-    hull() {
-        translate([face_jet_start_x, -face_jet_start_r, 0])
-            rotate([0, 90, 0]) cylinder(d = face_jet_d, h = 1.2, center = true, $fn = 40);
-        translate([face_jet_exit_x,  -face_jet_exit_inset, 0])
-            rotate([0, 90, 0]) cylinder(d = face_jet_d, h = 1.2, center = true, $fn = 40);
-    }
-
-    hull() {
-        translate([face_jet_start_x, 0,  face_jet_start_r])
-            rotate([0, 90, 0]) cylinder(d = face_jet_d, h = 1.2, center = true, $fn = 40);
-        translate([face_jet_exit_x,  0,  face_jet_exit_inset])
-            rotate([0, 90, 0]) cylinder(d = face_jet_d, h = 1.2, center = true, $fn = 40);
-    }
-
-    hull() {
-        translate([face_jet_start_x, 0, -face_jet_start_r])
-            rotate([0, 90, 0]) cylinder(d = face_jet_d, h = 1.2, center = true, $fn = 40);
-        translate([face_jet_exit_x,  0, -face_jet_exit_inset])
-            rotate([0, 90, 0]) cylinder(d = face_jet_d, h = 1.2, center = true, $fn = 40);
-    }
-
-    // Explicit port punches at start and exit points (cylinder + sphere) for guaranteed breakout
-    // +Y
-    translate([face_jet_start_x,  face_jet_start_r, 0])
-        rotate([0, 90, 0]) cylinder(d = face_port_d, h = face_port_len, center = true, $fn = 40);
-    translate([face_jet_start_x,  face_jet_start_r, 0])
-        sphere(d = face_port_d, $fn = 36);
-    translate([face_jet_exit_x,   face_jet_exit_inset, 0])
-        rotate([0, 90, 0]) cylinder(d = face_port_d, h = face_port_len, center = true, $fn = 40);
-    translate([face_jet_exit_x,   face_jet_exit_inset, 0])
-        sphere(d = face_port_d, $fn = 36);
-
-    // -Y
-    translate([face_jet_start_x, -face_jet_start_r, 0])
-        rotate([0, 90, 0]) cylinder(d = face_port_d, h = face_port_len, center = true, $fn = 40);
-    translate([face_jet_start_x, -face_jet_start_r, 0])
-        sphere(d = face_port_d, $fn = 36);
-    translate([face_jet_exit_x,  -face_jet_exit_inset, 0])
-        rotate([0, 90, 0]) cylinder(d = face_port_d, h = face_port_len, center = true, $fn = 40);
-    translate([face_jet_exit_x,  -face_jet_exit_inset, 0])
-        sphere(d = face_port_d, $fn = 36);
-
-    // +Z
-    translate([face_jet_start_x, 0,  face_jet_start_r])
-        rotate([0, 90, 0]) cylinder(d = face_port_d, h = face_port_len, center = true, $fn = 40);
-    translate([face_jet_start_x, 0,  face_jet_start_r])
-        sphere(d = face_port_d, $fn = 36);
-    translate([face_jet_exit_x,  0,  face_jet_exit_inset])
-        rotate([0, 90, 0]) cylinder(d = face_port_d, h = face_port_len, center = true, $fn = 40);
-    translate([face_jet_exit_x,  0,  face_jet_exit_inset])
-        sphere(d = face_port_d, $fn = 36);
-
-    // -Z
-    translate([face_jet_start_x, 0, -face_jet_start_r])
-        rotate([0, 90, 0]) cylinder(d = face_port_d, h = face_port_len, center = true, $fn = 40);
-    translate([face_jet_start_x, 0, -face_jet_start_r])
-        sphere(d = face_port_d, $fn = 36);
-    translate([face_jet_exit_x,  0, -face_jet_exit_inset])
-        rotate([0, 90, 0]) cylinder(d = face_port_d, h = face_port_len, center = true, $fn = 40);
-    translate([face_jet_exit_x,  0, -face_jet_exit_inset])
-        sphere(d = face_port_d, $fn = 36);
 }
