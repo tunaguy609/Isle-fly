@@ -63,11 +63,11 @@ jet_exit_y    = 2.5;
 jet_exit_z    = ry + 1.0;
 
 // --- Face cup jets (new: radiating around the nose face cup) ---
-face_jet_d    = 3.2;            // slightly larger diameter for stronger visibility
-face_jet_start_r = 5.0;         // radial distance from center for entry points
-face_jet_start_x = -rx + 11.0;  // position further aft for longer channel
-face_jet_exit_x  = -rx - 0.6;   // push outlets to/through nose face
-face_jet_exit_inset = 1.8;      // inset of face exits from centerline for clear emergence
+face_jet_d           = 3.6;         // bigger so openings are obvious
+face_jet_start_r     = 6.0;         // farther from center for clear cup entries
+face_jet_start_x     = -rx + 13.0; // deeper in body for longer channels
+face_jet_exit_x      = -rx - 1.4;  // overshoot past nose face to guarantee breakout
+face_jet_exit_inset  = 2.4;         // spread exits so they don't collapse near center
 
 // ============================================================
 //  Assembly
