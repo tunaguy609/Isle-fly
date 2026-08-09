@@ -5,7 +5,7 @@
 // ============================================================
 
 // --- Main dimensions ---
-head_length   = 45;   // mm, nose to skirt collar – shorter/stubbier for cedar-plug action
+head_length   = 46;   // mm, nose to skirt collar – shorter/stubbier for cedar-plug action
 max_diameter  = 26;   // mm, widest point
 
 // --- Derived ---
@@ -21,13 +21,13 @@ face_cup_d    = 24.0;           // mm, cup diameter used to dish the whole nose 
 bore_d        = 2.4;            // mm, center hole for leader/cable
 
 // --- Eye sockets ---
-eye_d         = 8.5;            // mm, eye recess diameter
-eye_depth     = 2.0;            // mm, recess depth
-eye_x_offset  = -13;            // mm, moved further back on the head
+eye_d         = 10;              // mm, eye recess diameter
+eye_depth     = 2.5;            // mm, recess depth
+eye_x_offset  = 7;              // mm, moved further back on the head
 eye_y_offset  = ry + 1.0;       // start outside the head surface so the cut enters cleanly
 
 // --- Skirt flair shared dimensions ---
-flair_od      = 22.5;           // mm, flared outer diameter at the wide end
+flair_od      = 19.5;           // mm, flared outer diameter at the wide end
 flair_ramp    = 9.5;            // mm, length of the narrow→wide ramp
 flair_flat    = 2.5;            // mm, length of the wide flat section at the tail of each flair
 
@@ -58,7 +58,7 @@ jet_d         = 3.2;
 jet_start_x   = -5.0;
 jet_start_y   = 10.0;           // start farther from center to steepen the entrance slope
 jet_start_z   = -8.0;
-jet_exit_x    = rx - 3.5;       // moved 2mm toward nose from rx-1.5
+jet_exit_x    = rx - 2.0;       // moved 1.5mm more forward (was rx-3.5)
 jet_exit_y    = 2.5;
 jet_exit_z    = ry + 1.0;
 
@@ -79,7 +79,7 @@ difference() {
             translate([rx * 0.50, 0, 0])
                 scale([1.0, 0.98, 0.95])
                     sphere(r = ry * 0.88, $fn = 80);
-            translate([rx - 3.5, 0, 0])
+            translate([rx - 2.0, 0, 0])
                 rotate([0, 90, 0])
                     cylinder(d1 = ry * 1.70, d2 = collar_d, h = 3.5, $fn = 80);
         }
