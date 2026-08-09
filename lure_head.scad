@@ -15,7 +15,7 @@ ry       = max_diameter / 2;    // Y/Z half-axis (radial)
 // --- Nose face (flat/cupped dish – cedar plug water-catch) ---
 face_d        = 16.0;           // mm, diameter of flat face cutout
 face_depth    = 6.0;            // mm, deeper cup for stronger water catch
-face_cup_d    = 24.0;           // mm, cup diameter used to dish the whole nose face
+face_cup_d    = 21.0;           // mm, cup diameter used to dish the whole nose face (reduced from 24.0 for thicker lip)
 
 // --- Bore (line-through hole) ---
 bore_d        = 2.4;            // mm, center hole for leader/cable
