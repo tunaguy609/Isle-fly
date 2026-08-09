@@ -55,7 +55,7 @@ collar_x      = (collar_start_x + collar_end_x) / 2;
 
 // --- Jets (original layout only) ---
 jet_d         = 3.2;
-jet_start_x   = -5.0;
+jet_start_x   = -4.5;
 jet_start_y   = 10.0;           // start farther from center to steepen the entrance slope
 jet_start_z   = -8.0;
 jet_exit_x    = rx - 2.0;       // moved 1.5mm more forward (was rx-3.5)
