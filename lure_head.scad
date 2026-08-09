@@ -13,11 +13,9 @@ rx       = head_length / 2;     // X half-axis (fore-aft)
 ry       = max_diameter / 2;    // Y/Z half-axis (radial)
 
 // --- Nose face (flat/cupped dish – cedar plug water-catch) ---
-face_d         = 16.0;          // mm, diameter of flat face cutout
-face_depth     = 6.0;           // mm, deeper cup for stronger water catch
-face_cup_d     = 24.0;          // mm, cup diameter used to dish the whole nose face
-face_rim_d     = 25.6;          // mm, slightly larger secondary cup for a softer rim
-face_rim_depth = 2.3;           // mm, a little more blend for a rounder edge
+face_d        = 16.0;           // mm, diameter of flat face cutout
+face_depth    = 6.0;            // mm, deeper cup for stronger water catch
+face_cup_d    = 24.0;           // mm, cup diameter used to dish the whole nose face
 
 // --- Bore (line-through hole) ---
 bore_d        = 2.4;            // mm, center hole for leader/cable
@@ -118,10 +116,6 @@ difference() {
     translate([-rx + 2.0, 0, 0])
         scale([1.0, 1.0, 0.85])
             sphere(d = face_cup_d, $fn = 96);
-
-    translate([-rx + 1.4, 0, 0])
-        scale([1.0, 1.0, 0.92])
-            sphere(d = face_rim_d, $fn = 96);
 
     translate([-rx - 0.2, 0, 0])
         rotate([0, 90, 0])
