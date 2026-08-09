@@ -117,9 +117,9 @@ difference() {
         scale([1.0, 1.0, 0.85])
             sphere(d = face_cup_d, $fn = 96);
 
-    translate([-rx + 1.8, 0, 0])
-        scale([1.0, 1.0, 0.92])
-            sphere(d = face_cup_d + 2.0, $fn = 96);
+    translate([-rx + 1.6, 0, 0])
+        scale([1.0, 1.0, 0.90])
+            sphere(d = face_cup_d + 1.5, $fn = 96);
 
     translate([-rx - 0.2, 0, 0])
         rotate([0, 90, 0])
