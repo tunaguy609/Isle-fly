@@ -27,8 +27,8 @@ eye_x_offset  = 7;              // mm, moved further back on the head
 eye_y_offset  = ry + 1.0;       // start outside the head surface so the cut enters cleanly
 
 // --- Skirt flair shared dimensions ---
-flair_od      = 18.0;           // mm, flared outer diameter at the wide end
-flair_ramp    = 11.0;            // mm, length of the narrow→wide ramp
+flair_od      = 17.5;           // mm, flared outer diameter at the wide end
+flair_ramp    = 12.0;            // mm, length of the narrow→wide ramp
 flair_flat    = 5.0;            // mm, length of the wide flat section at the tail of each flair
 
 // --- Front skirt flair (replaces shoulder, sits at head/collar junction) ---
