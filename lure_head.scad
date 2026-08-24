@@ -49,6 +49,9 @@ collar_bore_d = 13;
 collar_start_x = rx - 4;
 collar_end_x   = flair_end_x - 0.5;
 
+// Flat shoulder location at head/collar junction
+shoulder_x = collar_start_x;
+
 // Derived
 collar_len    = collar_end_x - collar_start_x;
 collar_x      = (collar_start_x + collar_end_x) / 2;
@@ -69,21 +72,29 @@ translate([0, 0, rx + collar_len - 4])
 rotate([0, 90, 0])
 difference() {
     union() {
-        hull() {
-            translate([-rx * 0.52, 0, 0])
-                scale([1.0, 1.00, 0.96])
-                    sphere(r = ry * 0.78, $fn = 80);
-            translate([-rx * 0.10, 0, 0])
-                scale([1.0, 1.00, 0.98])
-                    sphere(r = ry * 1.00, $fn = 90);
-            translate([rx * 0.50, 0, 0])
-                scale([1.0, 0.98, 0.95])
-                    sphere(r = ry * 0.88, $fn = 80);
-            translate([rx - 2.0, 0, 0])
-                rotate([0, 90, 0])
-                    cylinder(d = ry * 1.70 + 1.5, h = 3.5, $fn = 80);
+        // Head body with a true flat rear shoulder
+        intersection() {
+            hull() {
+                translate([-rx * 0.52, 0, 0])
+                    scale([1.0, 1.00, 0.96])
+                        sphere(r = ry * 0.78, $fn = 80);
+                translate([-rx * 0.10, 0, 0])
+                    scale([1.0, 1.00, 0.98])
+                        sphere(r = ry * 1.00, $fn = 90);
+                translate([rx * 0.50, 0, 0])
+                    scale([1.0, 0.98, 0.95])
+                        sphere(r = ry * 0.88, $fn = 80);
+                translate([rx - 2.0, 0, 0])
+                    rotate([0, 90, 0])
+                        cylinder(d = ry * 1.70 + 1.5, h = 3.5, $fn = 80);
+            }
+
+            // Keep only the forward part of the head up to shoulder_x
+            translate([-rx - 2, 0, 0])
+                cube([shoulder_x - (-rx - 2), 200, 200], center = false);
         }
 
+        // Collar starts exactly at the flat shoulder plane
         translate([collar_x, 0, 0])
             rotate([0, 90, 0])
                 cylinder(d = collar_d, h = collar_len, center = true, $fn = 60);
