@@ -81,7 +81,7 @@ difference() {
                     sphere(r = ry * 0.88, $fn = 80);
             translate([rx - 2.0, 0, 0])
                 rotate([0, 90, 0])
-                    cylinder(d1 = ry * 1.70 + 1.5, d2 = collar_d, h = 3.5, $fn = 80);
+                    cylinder(d = ry * 1.70 + 1.5, h = 3.5, $fn = 80);
         }
 
         translate([collar_x, 0, 0])
