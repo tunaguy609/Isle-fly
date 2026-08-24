@@ -90,8 +90,8 @@ difference() {
             }
 
             // Keep only the forward part of the head up to shoulder_x
-            translate([-rx - 2, 0, 0])
-                cube([shoulder_x - (-rx - 2), 200, 200], center = false);
+            translate([(-rx - 2 + shoulder_x)/2, 0, 0])
+                cube([shoulder_x - (-rx - 2), 200, 200], center = true);
         }
 
         // Collar starts exactly at the flat shoulder plane
